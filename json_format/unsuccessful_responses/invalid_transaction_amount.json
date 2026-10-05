@@ -1,0 +1,5 @@
+{
+  "status": 400,
+  "message": "The transaction amount must be greater than zero.",
+  "timestamp": "2024-06-01T00:00:00Z"
+}

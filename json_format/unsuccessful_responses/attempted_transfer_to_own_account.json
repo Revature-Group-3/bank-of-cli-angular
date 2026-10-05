@@ -1,0 +1,5 @@
+{
+  "status": 400,
+  "message": "You cannot transfer funds to your own account.",
+  "timestamp": "2024-06-01T00:00:00Z"
+}
