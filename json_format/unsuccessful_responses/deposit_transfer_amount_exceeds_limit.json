@@ -1,0 +1,5 @@
+{
+  "status": 400,
+  "message": "The deposit/transfer amount exceeds the maximum allowed limit.",
+  "timestamp": "2024-06-01T00:00:00Z"
+}
