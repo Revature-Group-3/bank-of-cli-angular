@@ -1,0 +1,5 @@
+{
+  "status": 400,
+  "message": "Insufficient funds. The withdrawal/transfer amount exceeds your available balance.",
+  "timestamp": "2024-06-01T00:00:00Z"
+}
