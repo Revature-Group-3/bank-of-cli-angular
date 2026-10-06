@@ -1,22 +1,8 @@
-// need to add inject function in order to inject Authservice class
 import { Component, inject } from '@angular/core';
-
-// Also need to import signal from @anglar/core package
 import { signal } from '@angular/core';
-/**
- * 1. The import path must point to the file name(auth-service),
- * not the class name(Authservice), and the file lives two folders
- * up from pages/register/:
- */
 import { AuthService } from '../../services/auth-service';
-
-// Also need to import account
-import { Account } from '../../models/account';
 import { Router } from '@angular/router';
 
-// imports, injections, classes is more logic heavy. Basically logic and functionality
-// vs.
-// Metadata(@Component) -> which is ui, components, visual , elements heavy. Basically visuals
 @Component({
   imports: [],
   selector: 'app-register',
@@ -24,33 +10,28 @@ import { Router } from '@angular/router';
   templateUrl: './register.html',
 })
 export class Register {
-  // Should call service
+  // Call services
   private authService = inject(AuthService);
+  private redirectLogin = inject(Router);   // Redirect to login page
 
-  // Redirect to login page
-  // 1. Inject router in component
-  private redirectLogin = inject(Router);
+  /**
+   * We need to capture submitted data from forms.
+   * We can do that through an event such as -> "click()".
+   * Then we need to store or set that data somewhere.
+   * We can do that by creating a new user with set fields,
+   * in this case a new account with set username and password, etc..
+   */
 
-  // Need to get submitted data from forms via the submit button.
-  // Which means that an event must take place -> "click()"
-  // Also we need to store that data somewhere. since it is the user's
-  // new username and password, we ned to set the user's fields to the
-  // submitted data. We can do that by creating a new user , in this case
-  // an account and set the username and password, etc..
-
-  // [value] = "firstName()"
+  // [value] = "firstName()",  [value] = "lastName()",etc.
   firstName = signal('');
-  // [value] = "lastName()"
   lastName = signal('');
-  // [value] = "username()"
   username = signal('');
-  // [value] = "password()"
   password = signal('');
 
-  // Message to output to the browser
+  // Message output to the browser depending on case
   message = signal('');
 
-  // Signal for login success if redirect doesnt happen
+  // Signal for login success if redirect doesn't happen
   registered = signal(false);
 
   // Call register functionality from AuthService
@@ -69,8 +50,9 @@ export class Register {
       this.message.set('Username taken :( ... Please choose another username.');
       console.log('Username taken. Could not create account.');
     }else{
-      // Temporary log for testing purposes: Result of Register on signup.
       this.message.set('Account successfully created! Wait a few seconds as we re-direct you to the log in page.');
+
+      // Temporary log for testing purposes: Result of Register on signup.
       console.log('Account successfully created.', created);
 
       this.registered.set(true);
