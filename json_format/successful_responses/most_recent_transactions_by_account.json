@@ -1,0 +1,26 @@
+{
+    "transactions": [
+        {
+            "id": 0,
+            "account_id": 0,
+            "type": "DEPOSIT",
+            "amount": 0,
+            "timestamp": "2024-06-01T00:00:00Z"
+        },
+        {
+            "id": 0,
+            "account_id": 0,
+            "type": "WITHDRAWAL",
+            "amount": 0,
+            "timestamp": "2024-06-01T00:00:00Z"
+        },
+        {
+            "id": 0,
+            "sender_account_id": 0,
+            "recipient_account_id": 0,
+            "type": "TRANSFER",
+            "amount": 0,
+            "timestamp": "2024-06-01T00:00:00Z"
+        }
+    ]
+}
