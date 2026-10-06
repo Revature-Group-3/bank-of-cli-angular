@@ -1,0 +1,50 @@
+<div class="login-page">
+
+    <h1 class="page-title">Bank of CLI</h1>
+
+    <div class="login-card">
+        
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+            <div class="input-group">
+                <label>Username</label>
+        
+                <input
+                    class="input-login"
+                    type="text"
+                    formControlName="username"
+                    placeholder="Enter your username"
+                >
+            </div>
+        
+            <div class="input-group">
+                <label>Password</label>
+        
+                <input
+                    class="input-login"
+                    type="password"
+                    formControlName="password"
+                    placeholder="Enter your password"
+                >
+            </div>
+        
+            <div class="action-group">
+                <button type="submit" class="login-button">
+                    Sign in
+                </button>
+            </div>
+        
+        </form>
+        <div class="divider">
+            <span></span>
+            <p>OR</p>
+            <span></span>
+        </div>
+
+        <p class="create-account">
+            Don't have an account?
+            <a routerLink="/register">Create Account</a>
+        </p>
+
+    </div>
+</div>
