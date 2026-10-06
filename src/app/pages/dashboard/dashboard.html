@@ -1,4 +1,5 @@
-<mat-grid-list cols="2" rowHeight="{{ rowHeight }}px">
+<!-- Dashboard grid -->
+<mat-grid-list #dashboard cols="2" rowHeight="{{ rowHeight }}px">
     <!-- Welcome tile -->
     <mat-grid-tile
         #welcomeTile
@@ -26,7 +27,7 @@
         [colspan]="2"
         style="background-color: lightblue;"
     >
-        <!-- Transaction button tiles -->
+        <!-- Individual transaction button tiles -->
         <mat-grid-list cols="3" rowHeight="{{ rowHeight }}px" style="display: block; width: 100%; height: 100%;">
             <!-- Deposit button tile -->
             <mat-grid-tile
