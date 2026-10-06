@@ -1,57 +1,70 @@
-<h1>Please Register</h1>
+<div class="register-page">
 
-<!--
-Form  tags for capturing user data.
--->
-<form>
-   <label>First Name</label>
-  <br>
+    <h1 class="brand-title">Bank of CLI</h1>
 
-    <!--
-      [value]="firstName()": Displays the signal's current value in the box, this case is '' (look at register.ts)
+    <div class="register-card">
 
-      (input): this fires on every keystroke, not on the click.
-      So the signal is already up to date while you're typing.
-      By the time you hit Submit, onRegister() just reads values
-      that are already there. The click doesn't set anything. It only collects.
-    -->
-    <input type="text" id="firstName"
-    [value]="firstName()"
-    (input) = "firstName.set($any($event.target).value)"
-    placeholder="First Name">
-  <br>
-   <label>Last Name</label>
-  <br>
-    <input type="text" id="lastName"
-    [value] = "lastName()"
-    (input) = "lastName.set($any($event.target).value)"
-    placeholder = "Last Name">
-  <br>
-  <label>Username</label>
-  <br>
-    <input type="text" id="username"
-    [value] = "username()"
-    (input) = "username.set($any($event.target).value)"
-    placeholder="Username">
-  <br>
-  <label>Password</label>
-  <br>
-    <input type="password" id="password"
-    [value] = "password()"
-    (input) = "password.set($any($event.target).value)"
-    placeholder="Password">
-  <br>
-  <!-- Event Listener -->
-  <input type="button" (click)="onRegister()" id="register-button" value="Submit">
-  @if(registered()){
-    <p>Not Redirected?</p>
-    <a routerLink="/login" style="color: blue;">Click here to log in.</a>
-  }
-  <!--
-  Prints a value into the page, and @if only shows the <p> when there's
-    actually a message, so nothing appears before the first submit.
-  -->
-  @if (message()) {
-    <p>{{ message() }}</p>
-  }
-</form>
+        <div class="register-header">
+            <h2>Let’s Make Your Account</h2>
+        </div>
+
+        <form [formGroup]="RegisterForm" (ngSubmit)="onSubmit()">
+
+            <div class="input-group">
+                <label>First name</label>
+                <input
+                    type="text"
+                    placeholder="Enter Your First Name"
+                    formControlName="firstName"
+                >
+            </div>
+
+            <div class="input-group">
+                <label>Last name</label>
+                <input
+                    type="text"
+                    placeholder="Enter Your Last Name"
+                    formControlName="LastName"
+                >
+            </div>
+
+            <div class="input-group">
+                <label>Create username</label>
+                <input
+                    type="text"
+                    placeholder="Enter Your Username"
+                    formControlName="username"
+                >
+            </div>
+
+            <div class="input-group">
+                <label>Create password</label>
+                <input
+                    type="password"
+                    placeholder="Enter Your Password"
+                    formControlName="password"
+                >
+            </div>
+
+            <div class="input-group">
+                <label>Confirm password</label>
+                <input
+                    type="password"
+                    placeholder="Confirm Your Password"
+                    formControlName="confirmPassword"
+                >
+            </div>
+
+            <button type="submit" class="register-button">
+                Register
+            </button>
+
+        </form>
+        <p class="login-link">
+            Already have an account?
+            <a routerLink="/">Sign in</a>
+        </p>
+
+    </div>
+
+</div>

@@ -1,0 +1,105 @@
+.register-page {
+    min-height: 100vh;
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    background: linear-gradient(
+        180deg,
+        #c9c9f4 0%,
+        #b8b9dc 45%,
+        #8f91ad 100%
+    );
+
+    position: relative;
+}
+
+.brand-title {
+    margin-top: 4rem;
+
+    color: white;
+    font-size: 2.5rem;
+    font-weight: 500;
+    margin-bottom: 2rem;
+}
+
+.register-card {
+    width: 100%;
+    max-width: 420px;
+    margin-top: 2rem;
+}
+
+.register-header {
+    position: relative;
+
+    margin-bottom: 1.5rem;
+}
+
+.register-header h2 {
+    text-align: center;
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.cancel-link {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    font-style: italic;
+
+    font-size: 1.1rem;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+
+    margin-bottom: 1rem;
+}
+
+.input-group label {
+    margin-bottom: 0.4rem;
+
+    color: white;
+    text-align: center;
+    font-weight: 500;
+}
+
+.input-group input {
+    padding: 0.85rem 1rem;
+
+    border: none;
+    border-radius: 12px;
+
+    font-size: 1rem;
+
+    outline: none;
+}
+
+.input-group input:focus {
+    box-shadow: 0 0 0 2px #8b5cf6;
+}
+
+.register-button {
+    width: 100%;
+
+    margin-top: 1.2rem;
+    padding: 0.9rem;
+
+    border: none;
+    border-radius: 8px;
+
+    background: #7c6ee6;
+    color: white;
+    font-weight: 600;
+
+    font-size: 1.2rem;
+
+    cursor: pointer;
+}
+
+.register-button:hover {
+    filter: brightness(0.95);
+}
