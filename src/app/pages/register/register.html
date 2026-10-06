@@ -24,7 +24,7 @@
                 <input
                     type="text"
                     placeholder="Enter Your Last Name"
-                    formControlName="LastName"
+                    formControlName="lastName"
                 >
             </div>
 
@@ -58,7 +58,11 @@
             <button type="submit" class="register-button">
                 Register
             </button>
+            @if (message()) {
+              <p>{{ message() }}</p>
+            }
 
+        <br>
         </form>
         <p class="login-link">
             Already have an account?
