@@ -11,9 +11,11 @@ export class TransactionCenter {
   amount = signal('');
   toAccount = signal('');
   message = signal('');
-  subMessage = signal('');
 
   onTransfer() {
+    // Reset the messages to prevent lingering errors
+    this.message.set('');
+
     const amount = this.amount();
     const toAccount = this.toAccount();
 
@@ -24,7 +26,20 @@ export class TransactionCenter {
     } else if (Number(amount) <= 0) {
       this.message.set("Amount must be greater than zero.");
       return;
+    } else if (isNaN(Number(amount))) {
+      this.message.set("Amount must be a valid number.");
+      return;
     }
+
+    // TODO: uncomment this when the transaction service is implemented
+    /*
+    this.transactions.transfer({
+    senderAccountId: currentUser.id,
+    recipientAccountId: Number(this.toAccount()),
+    amount: Number(this.amount()),
+    });
+    */
+
     console.log(`Transferring ${amount} to account ${toAccount}`);
   }
 }
