@@ -34,6 +34,33 @@ export class AuthService {
     .subscribe(data => this.accounts.set(data));
   }
 
+  /**
+   * .find() returns either the matching account or undefined, so the return type
+   * is Account | undefined:
+   * If recipient doesn't exist, undefined is returned
+   */
+  public getAccountsByUsername(username: string): Account | undefined {
+    return this.accounts().find(u => u.username === username);
+  }
+
+  /**
+   * Get the account by its username and set the new balance to the amount.
+   * @param username Used to retrieve a specific account by this username
+   * @param amount Account's new set balance
+   */
+  public updateBalance(username: string , amount: number): void{
+    // 1. Replace the matching account with the updated copy
+    //
+    this.accounts.update(list =>
+      list.map(a => a.username === username ? {...a, balance: amount} : a)
+    );
+
+    // 2. Keep currentUser in sync if it's the logged-in account
+    if(this.currentUser()?.username == username){
+      this.currentUser.set(this.getAccountsByUsername(username)?? null);
+    }
+  }
+
   // ': Account | null' means of type account or null to return when this function is called.
   // Omit : a typescript utility type, that creates a new type by taking an existing type and removing some fields.
   // in this case the 'id' field is removed
