@@ -1,10 +1,14 @@
 import { Component } from '@angular/core';
+import { MatGridListModule } from '@angular/material/grid-list';
 
-// Similar to Controller/view
+// User-facing dashboard
 @Component({
-  imports: [],
+  imports: [MatGridListModule],
   selector: 'app-dashboard',
   styleUrl: './dashboard.css',
   templateUrl: './dashboard.html',
 })
-export class Dashboard {}
+export class Dashboard {
+  // Material grid row height
+  rowHeight: number = 50;
+}

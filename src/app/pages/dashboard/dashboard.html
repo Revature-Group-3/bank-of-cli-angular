@@ -1,1 +1,71 @@
-<p>dashboard works!</p>
+<mat-grid-list cols="2" rowHeight="{{ rowHeight }}px">
+    <!-- Welcome tile -->
+    <mat-grid-tile
+        #welcomeTile
+        [rowspan]="3"
+        [colspan]="1"
+        style="background-color: pink;"
+    >
+        <p>Welcome, John!</p>
+    </mat-grid-tile>
+
+    <!-- Balance tile -->
+    <mat-grid-tile
+        #balanceTile
+        [rowspan]="3"
+        [colspan]="1"
+        style="background-color: yellow;"
+    >
+        <p>Account Balance: $1,500.00</p>
+    </mat-grid-tile>
+
+    <!-- Transaction buttons tile -->
+    <mat-grid-tile
+        #transactionButtonsTile
+        [rowspan]="1"
+        [colspan]="2"
+        style="background-color: lightblue;"
+    >
+        <!-- Transaction button tiles -->
+        <mat-grid-list cols="3" rowHeight="{{ rowHeight }}px" style="display: block; width: 100%; height: 100%;">
+            <!-- Deposit button tile -->
+            <mat-grid-tile
+                #depositButtonTile
+                [colspan]="1"
+            >
+                <p>Deposit</p>
+            </mat-grid-tile>
+
+            <!-- Withdraw button tile -->
+            <mat-grid-tile
+                #withdrawButtonTile
+                [colspan]="1"
+            >
+                <p>Withdraw</p>
+            </mat-grid-tile>
+
+            <!-- Transfer button tile -->
+            <mat-grid-tile
+                #transferButtonTile
+                [colspan]="1"
+            >
+                <p>Transfer</p>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </mat-grid-tile>
+    
+    <!-- Recent transaction history tile -->
+    <mat-grid-tile
+        #transactionHistoryTile
+        [rowspan]="8"
+        [colspan]="2"
+        style="background-color: lightgreen;"
+    >
+        <p>Recent Transaction History:</p>
+        <ul>
+            <li>Deposit: $500.00</li>
+            <li>Withdrawal: $200.00</li>
+            <li>Transfer: $100.00</li>
+        </ul>
+    </mat-grid-tile>
+</mat-grid-list>
