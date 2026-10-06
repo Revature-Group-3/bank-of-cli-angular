@@ -1,1 +1,23 @@
-<p>transaction-center works!</p>
+<h1>Transaction Center</h1>
+
+<form>
+  <label>Amount</label>
+  <input type="text" id="amount"
+  [value] = "amount()"
+  (input) = "amount.set($any($event.target).value)"
+  placeholder="Amount">
+  <br>
+  <label>Recipient Account</label>
+  <input type="text" id="toAccount"
+  [value] = "toAccount()"
+  (input) = "toAccount.set($any($event.target).value)"
+  placeholder="Recipient Account">
+  <br>
+  <input type="button" (click)="onTransfer()" id="transfer-button" value="Transfer">
+  @if (message()) {
+    <p>{{ message() }}</p>
+  }
+  @if (subMessage()) {
+    <p>{{ subMessage() }}</p>
+  }
+</form>
