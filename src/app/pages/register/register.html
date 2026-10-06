@@ -1,1 +1,107 @@
-<p>register works!</p>
+<h1>Please Register</h1>
+
+<!--
+  Elements that may have self closing tags are usually elements in a document
+  that represent data instead of visual or physical structure elements. Think
+  about link tags, text tags, metadata, a tags, etc. Its not limited to those tags
+  but commonly, those tags are self closing.
+
+  What kind of tags are these called?
+  These type of elements are called void
+  elements, because they cant "contain"
+  anything such as content or children.
+
+  So for forms, text will be self closing.
+
+  Label is not self closing because the label represents the text that defines the field.
+-->
+<form>
+   <label>First Name</label>
+  <br>
+
+    <!--
+      [value]="firstName()": Displays the signal's current value in the box, this case is '' (look at register.ts)
+
+      (input): this fires on every keystroke, not on the click.
+      So the signal is already up to date while you're typing.
+      By the time you hit Submit, onRegister() just reads values
+      that are already there. The click doesn't set anything. It only collects.
+
+      $any($event.target).value, piece by piece:
+
+      $event is the event object Angular hands you
+      (like the Event parameter in a Java listener).
+
+      .target is the element the event came from, here the input box.
+
+      .value is the text currently in it.
+
+      $any(...) is a function, not a variable. It tells TypeScript
+      "trust me on the type," because TypeScript doesn't know the
+      target is an input and would otherwise complain about .value.
+
+      Why dont we use action and method fields?
+      action and method are both for the browser
+      sending the form to a server itself.
+      Your component handles all of that now.
+
+      action is for sending a form to a server URL.
+      Angular doesn't use it, and it would try to
+      load that file as a page.
+    -->
+    <input type="text" id="firstName"
+    [value]="firstName()"
+    (input) = "firstName.set($any($event.target).value)"
+    placeholder="First Name">
+  <br>
+   <label>Last Name</label>
+  <br>
+    <input type="text" id="lastName"
+    [value] = "lastName()"
+    (input) = "lastName.set($any($event.target).value)"
+    placeholder = "Last Name">
+  <br>
+  <label>Username</label>
+  <br>
+    <input type="text" id="username"
+    [value] = "username()"
+    (input) = "username.set($any($event.target).value)"
+    placeholder="Username">
+  <br>
+  <label>Password</label>
+  <br>
+    <input type="password" id="password"
+    [value] = "password()"
+    (input) = "password.set($any($event.target).value)"
+    placeholder="Password">
+  <br>
+
+  <!--
+  Event listener syntax for button click:
+  - (click) ="eventMethodInTsFile()"
+  -->
+  <input type="button" (click)="onRegister()" id="register-button" value="Submit">
+  @if(registered()){
+    <p>Not Redirected?</p>
+    <a routerLink="/login" style="color: blue;">Click here to log in.</a>
+  }
+  <!--
+  {{ }} prints a value into the page, and @if only shows the <p> when there's
+    actually a message, so nothing appears before the first submit. Because
+    it's a signal, the page updates on its own whenever you .set() it.
+  -->
+  @if (message()) {
+    <p>{{ message() }}</p>
+  }
+
+
+
+  <!--
+    Balance will be optional. if no balance provided, then balance will be initially 0.
+  -->
+    <!--
+   <label>balance</label>
+
+   update : kep balance 0 initially on register.
+  -->
+</form>

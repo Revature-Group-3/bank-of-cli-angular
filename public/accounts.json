@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "firstName": "Hal",
+    "lastName": "Jordan",
+    "username": "hal@email.com",
+    "password": "green",
+    "balance": 1500.00
+  },
+  {
+    "id": 2,
+    "firstName": "John",
+    "lastName": "Stewart",
+    "username": "js@email.com",
+    "password": "lantern",
+    "balance": 320.50
+  },
+  {
+    "id": 3,
+    "firstName": "Guy",
+    "lastName": "Gardner",
+    "username": "guy@email.com",
+    "password": "ring",
+    "balance": 0
+  }
+]
