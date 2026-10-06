@@ -1,1 +1,23 @@
-<p>login works!</p>
+<h1>Login to your account!</h1>
+
+<form>
+  <label>Username</label>
+  <input type="text" id="username"
+  [value] = "username()"
+  (input) = "username.set($any($event.target).value)"
+  placeholder="Username">
+  <br>
+  <label>Password</label>
+  <input type="password" id="password"
+  [value] = "password()"
+  (input) = "password.set($any($event.target).value)"
+  placeholder="Password">
+  <br>
+  <input type="button" (click)="onLogin()" id="login-button" value="Submit">
+  @if(authService.currentUser()){
+    <button type="button" (click)="onLogout()">Log out</button>
+  }
+  @if (message()) {
+    <p>{{ message() }}</p>
+  }
+</form>

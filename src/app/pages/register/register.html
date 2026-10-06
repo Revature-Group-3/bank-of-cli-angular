@@ -1,1 +1,57 @@
-<p>register works!</p>
+<h1>Please Register</h1>
+
+<!--
+Form  tags for capturing user data.
+-->
+<form>
+   <label>First Name</label>
+  <br>
+
+    <!--
+      [value]="firstName()": Displays the signal's current value in the box, this case is '' (look at register.ts)
+
+      (input): this fires on every keystroke, not on the click.
+      So the signal is already up to date while you're typing.
+      By the time you hit Submit, onRegister() just reads values
+      that are already there. The click doesn't set anything. It only collects.
+    -->
+    <input type="text" id="firstName"
+    [value]="firstName()"
+    (input) = "firstName.set($any($event.target).value)"
+    placeholder="First Name">
+  <br>
+   <label>Last Name</label>
+  <br>
+    <input type="text" id="lastName"
+    [value] = "lastName()"
+    (input) = "lastName.set($any($event.target).value)"
+    placeholder = "Last Name">
+  <br>
+  <label>Username</label>
+  <br>
+    <input type="text" id="username"
+    [value] = "username()"
+    (input) = "username.set($any($event.target).value)"
+    placeholder="Username">
+  <br>
+  <label>Password</label>
+  <br>
+    <input type="password" id="password"
+    [value] = "password()"
+    (input) = "password.set($any($event.target).value)"
+    placeholder="Password">
+  <br>
+  <!-- Event Listener -->
+  <input type="button" (click)="onRegister()" id="register-button" value="Submit">
+  @if(registered()){
+    <p>Not Redirected?</p>
+    <a routerLink="/login" style="color: blue;">Click here to log in.</a>
+  }
+  <!--
+  Prints a value into the page, and @if only shows the <p> when there's
+    actually a message, so nothing appears before the first submit.
+  -->
+  @if (message()) {
+    <p>{{ message() }}</p>
+  }
+</form>
