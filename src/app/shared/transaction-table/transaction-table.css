@@ -1,0 +1,70 @@
+@font-face {
+  font-family: Inter;
+  src: url('./Inter-VariableFont_opsz,wght.ttf');
+}
+
+.table-position {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid blue;
+  border-radius: 15px;
+  overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.table-rows {
+  height: 192px;
+  flex: 0 0 192px;
+  overflow-y: auto;
+}
+
+table.mat-mdc-table {
+  width: 100%;
+}
+
+table .mat-mdc-header-row {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--mat-sys-surface);
+}
+
+table .mat-mdc-header-row,
+table .mat-mdc-row {
+  height: 25px;
+}
+
+table th,
+table td {
+  font-family: Inter, sans-serif;
+  padding: 4px 10px;
+  font-size: 14px;
+}
+
+table .first-column {
+  padding-right: 35px;
+}
+
+@media only screen and (max-width: 402px) {
+  .mat-column-Date,
+  .mat-column-Status {
+    display: none;
+  }
+
+  .table-position {
+    width: 375px;
+    max-width: 100%;
+  }
+
+  .table-rows {
+    height: 350px;
+    width: 100%;
+    flex: 0 0 350px;
+    overflow-y: auto;
+  }
+
+  table .mat-mdc-row {
+  height: 65px;
+  }
+}
