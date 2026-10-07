@@ -1,14 +1,12 @@
 import { Component } from '@angular/core';
-import { MatGridListModule } from '@angular/material/grid-list';
+import { MatCardModule } from '@angular/material/card';
+import { TransactionTable } from '../../shared/transaction-table/transaction-table';
 
 // User-facing dashboard
 @Component({
-  imports: [MatGridListModule],
+  imports: [MatCardModule, TransactionTable],
   selector: 'app-dashboard',
   styleUrl: './dashboard.css',
   templateUrl: './dashboard.html',
 })
-export class Dashboard {
-  // Material grid row height
-  rowHeight: number = 50;
-}
+export class Dashboard {}
