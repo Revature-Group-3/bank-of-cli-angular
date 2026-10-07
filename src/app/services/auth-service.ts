@@ -28,10 +28,10 @@ export class AuthService {
   private http = inject(HttpClient);
 
 
-  constructor(){
+  constructor() {
     // .subscribe() needs a callback saying what to do once the data arrives.
     this.http.get<Account[]>('/accounts.json')
-    .subscribe(data => this.accounts.set(data));
+      .subscribe(data => this.accounts.set(data));
   }
 
   /* .find() returns either the matching account or undefined, so the return type
@@ -42,21 +42,25 @@ export class AuthService {
     return this.accounts().find(u => u.username === username);
   }
 
+  public getAccountByID(id: number): Account | undefined {
+    return this.accounts().find(a => a.id === id);
+  }
+
   /**
    * Get the account by its username and set the new balance to the amount.
    * @param username Used to retrieve a specific account by this username
    * @param amount Account's new set balance
    */
-  public updateBalance(username: string , amount: number): void{
+  public updateBalance(username: string, amount: number): void {
     // 1. Replace the matching account with the updated copy
     //
     this.accounts.update(list =>
-      list.map(a => a.username === username ? {...a, balance: amount} : a)
+      list.map(a => a.username === username ? { ...a, balance: amount } : a)
     );
 
     // 2. Keep currentUser in sync if it's the logged-in account
-    if(this.currentUser()?.username == username){
-      this.currentUser.set(this.getAccountsByUsername(username)?? null);
+    if (this.currentUser()?.username == username) {
+      this.currentUser.set(this.getAccountsByUsername(username) ?? null);
     }
   }
 
@@ -72,17 +76,17 @@ export class AuthService {
     // .some() goes through the array and returns true if any
     // account matches the condition.ååå
     const exists = current.some(a => a.username === account.username);
-    if (exists){return null;}
+    if (exists) { return null; }
 
     // 2. Figure out the next id (nextId)
     // - if current is empty -> 1
     // - otherwise -> highest id(also latest generated id) + 1
-    let nextId : number;
+    let nextId: number;
 
     // Check if list is empty
-    if (current.length === 0){
+    if (current.length === 0) {
       nextId = 1;
-    }else{
+    } else {
       const ids = current.map(a => a.id); // [1,2,5] -> just the ids mapped out
       nextId = Math.max(...ids) + 1;    // highest id + 1
     }
@@ -100,7 +104,7 @@ export class AuthService {
         }
           Then.....
      */
-    const newAccount: Account = { ...account, id: nextId}
+    const newAccount: Account = { ...account, id: nextId }
 
     // 4. Add it to the signal (return a NEW array, don't push)
     // Updates the accounts list by adding a new account.
@@ -126,7 +130,7 @@ export class AuthService {
    * Return: Account, and handoff + redirect to dashboard.
    */
 
-  public login(username: string, password: string): Account | null{
+  public login(username: string, password: string): Account | null {
 
     // 1. get current Accounts
     const currentAccounts = this.accounts();
@@ -134,10 +138,10 @@ export class AuthService {
     // Check if account already exists:
     const userExists = currentAccounts.find(u => u.username === username && u.password === password);
 
-    if(userExists){
+    if (userExists) {
       this.currentUser.set(userExists);
       return userExists;
-    }else{
+    } else {
       return null;
     }
 
