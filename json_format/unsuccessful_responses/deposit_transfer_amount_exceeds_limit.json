@@ -1,5 +1,5 @@
 {
   "status": 400,
-  "message": "The deposit/transfer amount exceeds the maximum allowed limit.",
+  "message": "The deposit/transfer amount exceeds the maximum allowed limit of $10,000.",
   "timestamp": "2024-06-01T00:00:00Z"
 }

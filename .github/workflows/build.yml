@@ -1,0 +1,35 @@
+# We use this to verify builds before merging to avoid PR breaking main
+# Name shown in the GitHub "Actions" tab
+name: Build
+
+# When to run this check
+on:
+  # On every pull request that targets main
+  pull_request:
+    branches: [main]
+  # Also after anything is merged into main, to confirm main still builds
+  push:
+    branches: [main]
+
+jobs:
+  # "build" is the job's name. It is also the name of the status check
+  # shown on each pull request.
+  build:
+    # GitHub starts a fresh, temporary Linux machine for each run
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Download the repository's code onto that machine
+      - uses: actions/checkout@v6
+
+      # 2. Install Node 24 (this project's Angular CLI needs 22.22.3 or newer).
+      #    "cache: npm" saves downloaded packages so later runs are faster.
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+
+      # 3. Install the exact dependency versions listed in package-lock.json
+      - run: npm ci
+
+      # 4. Compile the app (runs "ng build"). If this fails, the check fails.
+      - run: npm run build

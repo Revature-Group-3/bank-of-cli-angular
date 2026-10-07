@@ -1,44 +1,39 @@
-import { Component, inject } from '@angular/core';
-import { signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth-service';
 
 @Component({
-  imports: [],
   selector: 'app-login',
-  styleUrl: './login.css',
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './login.html',
+  styleUrl: './login.css'
 })
 export class Login {
   private authService = inject(AuthService);
+  private router = inject(Router);
 
-  username = signal('');
-  password = signal('');
   message = signal('');
-  subMessage = signal('');
 
 
-  onLogin(){
-    const username = this.username();
-    const password = this.password();
+  loginForm = new FormGroup({
+    username: new FormControl(''),
+    password: new FormControl('')
+  });
 
-    const loggedIn = this.authService.login(username, password);
-
-    if(loggedIn === null){
-      this.message.set("User does not exist :( ... Create an account with use by registering!");
-      console.log('User could not be logged in.');
-    }else{
-      this.message.set("You are logged in! ^0^");
-      this.subMessage.set("Redirecting you to your personalized home page.");
-      console.log('User logged in.', loggedIn);
+  onSubmit() {
+    const form = this.loginForm.value;
+    const loggedIn = this.authService.login(form.username?? '', form.password ?? '');
+    //console.log(this.loginForm.value);
+    if (loggedIn === null) {
+      this.message.set('Invalid username or password. Please try again.');
+      console.log('Unable to login.');
+    } else {
+      this.message.set('You are logged in! Redirecting to your dashboard...');
+      console.log('Login Successful.');
+      setTimeout(() => {
+        this.router.navigate(['/dashboard']);
+      }, 2000);
     }
-
-  }
-
-  onLogout(){
-    this.authService.logout();
-
-    this.message.set("You logged out successfully.");
-    console.log("User Logged out successfully.");
-
   }
 }
