@@ -1,7 +1,6 @@
 import { CurrencyPipe } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { Component } from '@angular/core';
+import { MatTableModule } from '@angular/material/table';
 
 export interface Transaction {
   transactionType: string;
@@ -50,17 +49,12 @@ export const transactionData: Transaction[] = [
 ];
 
 @Component({
-  imports: [MatTableModule, MatPaginatorModule, CurrencyPipe],
+  imports: [MatTableModule, CurrencyPipe],
   selector: 'app-transaction-table',
   styleUrl: './transaction-table.css',
   templateUrl: './transaction-table.html',
 })
 export class TransactionTable {
-  readonly dataSource = new MatTableDataSource<Transaction>([...transactionData].reverse());
+  readonly dataSource = [...transactionData].reverse();
   readonly displayedColumns = ['Type', 'Date', 'Status', 'Amount'];
-
-  @ViewChild(MatPaginator)
-  set paginator(paginator: MatPaginator) {
-    this.dataSource.paginator = paginator;
-  }
 }

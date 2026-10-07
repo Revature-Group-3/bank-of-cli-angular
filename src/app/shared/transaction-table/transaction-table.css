@@ -16,15 +16,23 @@
 .table-rows {
   height: 192px;
   flex: 0 0 192px;
+  overflow-y: auto;
 }
 
 table.mat-mdc-table {
   width: 100%;
 }
 
+table .mat-mdc-header-row {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--mat-sys-surface);
+}
+
 table .mat-mdc-header-row,
 table .mat-mdc-row {
-  height: 32px;
+  height: 25px;
 }
 
 table th,
@@ -38,8 +46,25 @@ table .first-column {
   padding-right: 35px;
 }
 
-mat-paginator {
-  flex: 0 0 auto;
-  margin-top: 0;
-  --mat-paginator-container-size: 40px;
+@media only screen and (max-width: 402px) {
+  .mat-column-Date,
+  .mat-column-Status {
+    display: none;
+  }
+
+  .table-position {
+    width: 375px;
+    max-width: 100%;
+  }
+
+  .table-rows {
+    height: 350px;
+    width: 100%;
+    flex: 0 0 350px;
+    overflow-y: auto;
+  }
+
+  table .mat-mdc-row {
+  height: 65px;
+  }
 }

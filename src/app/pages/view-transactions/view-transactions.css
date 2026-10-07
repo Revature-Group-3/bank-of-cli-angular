@@ -12,4 +12,11 @@ app-transaction-table {
   display: block;
   width: min(900px, 100%);
   margin-top: auto;
+  margin-bottom: 48px;
+}
+
+@media (max-width: 402px) {
+  .transactions-page {
+    padding-inline: 16px;
+  }
 }
