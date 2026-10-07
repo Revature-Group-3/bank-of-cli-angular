@@ -66,4 +66,18 @@ describe('TransactionService', () => {
     expect(result).toMatchObject({ type: 'WITHDRAWAL' });
     expect(auth.currentUser()?.balance).toBe(0);
   });
+
+  it('rejects a deposit over the limit', () => {
+    const result = service.deposit({ accountId: 1, amount: 10000.01 });
+
+    expect(result).toMatchObject({ status: 400 });
+    expect(auth.currentUser()?.balance).toBe(1500);
+  });
+
+  it('allows a deposit of exactly the limit', () => {
+    const result = service.deposit({ accountId: 1, amount: 10000 });
+
+    expect(result).toMatchObject({ type: 'DEPOSIT' });
+    expect(auth.currentUser()?.balance).toBe(11500);
+  });
 });

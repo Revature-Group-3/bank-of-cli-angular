@@ -2,6 +2,10 @@ import { inject, Service, signal } from '@angular/core';
 import { AuthService } from './auth-service';
 import { ApiError } from '../models/api-error';
 import { DepositRequest, StandardTransaction, Transaction, WithdrawalRequest } from '../models/transaction';
+
+// the most that can be deposited or transferred in a single transaction
+export const MAX_TRANSACTION_AMOUNT = 10000;
+
 @Service()
 export class TransactionService {
   // gives this service access to the logged-in user and the accounts
@@ -21,6 +25,11 @@ export class TransactionService {
     // rule: the amount must be a real number above zero
     if (!(request.amount > 0)) {
       return this.error(400, 'The transaction amount must be greater than zero.');
+    }
+
+    // rule: a single deposit cannot exceed the limit
+    if (request.amount > MAX_TRANSACTION_AMOUNT) {
+      return this.error(400, 'The deposit/transfer amount exceeds the maximum allowed limit of $10,000.');
     }
 
     // do the math here, then hand AuthService the new balance
