@@ -1,8 +1,16 @@
+<!-- Navbar component -->
 <mat-toolbar>
+  <!-- Branding -->
   <span>Bank of CLI</span>
-
   <span class="spacer"></span>
 
+  <!-- Transaction buttons -->
+  <button mat-button routerLink="/deposit">Deposit</button>
+  <button mat-button routerLink="/withdraw">Withdraw</button>
+  <button mat-button routerLink="/transfer">Transfer</button>
+  <span class="spacer"></span>
+
+  <!-- Account link buttons -->
   <a mat-button>Account</a>
   <a mat-button>Sign out</a>
 </mat-toolbar>
