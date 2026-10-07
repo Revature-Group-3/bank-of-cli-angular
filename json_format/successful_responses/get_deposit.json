@@ -1,7 +1,7 @@
 {
     "id": 0,
-    "account_id": 0,
-    "type": "WITHDRAWAL",
+    "accountId": 0,
+    "type": "DEPOSIT",
     "amount": 0,
     "timestamp": "2024-06-01T00:00:00Z"
 }

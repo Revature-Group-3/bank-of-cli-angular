@@ -7,8 +7,7 @@ import { ViewTransactions } from './pages/view-transactions/view-transactions';
 import { TransactionTest } from './pages/transaction-test/transaction-test';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: 'login', component: Login },
+  { path: '', component: Login },
   { path: 'register', component: Register },
   { path: 'dashboard', component: Dashboard },
   { path: 'transaction', component: TransactionCenter },
