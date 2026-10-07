@@ -3,7 +3,7 @@
     <!-- Welcome card -->
     <mat-card class="welcome-card grid-item">
         <mat-card-header>
-            <mat-card-title>Welcome to your Bank of CLI dashboard, FIRSTNAME!</mat-card-title>
+            <mat-card-title>Welcome to your Bank of CLI dashboard, {{ firstName() }}!</mat-card-title>
         </mat-card-header>
         <mat-card-content>
             <p>Check your balance, review recent activity, and make transactions, all in one place.</p>
@@ -16,7 +16,7 @@
             <mat-card-title>Account Balance</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-            <p class="balance-display">$_.__</p>
+            <p class="balance-display">{{ balance() | currency }}</p>
         </mat-card-content>
     </mat-card>
 
