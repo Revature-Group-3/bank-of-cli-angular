@@ -45,4 +45,25 @@ describe('TransactionService', () => {
 
     expect(result).toMatchObject({ status: 401 });
   });
+
+  it('subtracts a withdrawal from the balance and returns the transaction', () => {
+    const result = service.withdraw({ accountId: 1, amount: 200 });
+
+    expect(result).toMatchObject({ accountId: 1, type: 'WITHDRAWAL', amount: 200 });
+    expect(auth.currentUser()?.balance).toBe(1300);
+  });
+
+  it('rejects a withdrawal larger than the balance', () => {
+    const result = service.withdraw({ accountId: 1, amount: 2000 });
+
+    expect(result).toMatchObject({ status: 400 });
+    expect(auth.currentUser()?.balance).toBe(1500);
+  });
+
+  it('allows withdrawing the entire balance', () => {
+    const result = service.withdraw({ accountId: 1, amount: 1500 });
+
+    expect(result).toMatchObject({ type: 'WITHDRAWAL' });
+    expect(auth.currentUser()?.balance).toBe(0);
+  });
 });
