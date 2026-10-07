@@ -4,20 +4,22 @@ import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-action-dialog',
-  standalone: true,
   imports: [ MatDialogModule, MatButtonModule ],
-  templateUrl: './dialogue-box.html',
-  styleUrl: './dialogue-box.css'
+  templateUrl: './dialog-box.html',
+  styleUrl: './dialog-box.css',
+  standalone: true
 })
 
-export class DialogueBox {
+export class DialogBox {
   constructor(
-    private dialogRef: MatDialogRef<DialogueBox>,
+    private dialogRef: MatDialogRef<DialogBox>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
   selectOption (action: string) {
     this.dialogRef.close(action);
   }
+
+
 
 }

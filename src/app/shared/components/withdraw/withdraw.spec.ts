@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DialogueBox } from './dialogue-box';
+import { Withdraw } from './withdraw';
 
-describe('DialogueBox', () => {
-  let component: DialogueBox;
-  let fixture: ComponentFixture<DialogueBox>;
+describe('Withdraw', () => {
+  let component: Withdraw;
+  let fixture: ComponentFixture<Withdraw>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DialogueBox],
+      imports: [Withdraw],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(DialogueBox);
+    fixture = TestBed.createComponent(Withdraw);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

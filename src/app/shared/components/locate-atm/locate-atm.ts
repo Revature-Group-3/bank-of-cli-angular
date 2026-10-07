@@ -7,5 +7,6 @@ import { MatDialogModule } from '@angular/material/dialog';
   selector: 'app-deposit-cash',
   styleUrl: './locate-atm.css',
   templateUrl: './locate-atm.html',
+  standalone: true
 })
 export class LocateAtm {}
