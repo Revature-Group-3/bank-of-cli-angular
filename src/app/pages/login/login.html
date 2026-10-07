@@ -3,12 +3,12 @@
     <h1 class="page-title">Bank of CLI</h1>
 
     <div class="login-card">
-        
+
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
             <div class="input-group">
                 <label>Username</label>
-        
+
                 <input
                     class="input-login"
                     type="text"
@@ -16,10 +16,10 @@
                     placeholder="Enter your username"
                 >
             </div>
-        
+
             <div class="input-group">
                 <label>Password</label>
-        
+
                 <input
                     class="input-login"
                     type="password"
@@ -27,14 +27,19 @@
                     placeholder="Enter your password"
                 >
             </div>
-        
+
             <div class="action-group">
                 <button type="submit" class="login-button">
                     Sign in
                 </button>
             </div>
-        
+            @if (message()) {
+              <p>{{ message() }}</p>
+            }
+
         </form>
+
+
         <div class="divider">
             <span></span>
             <p>OR</p>
