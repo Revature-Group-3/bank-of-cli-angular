@@ -1,70 +1,95 @@
 <div class="register-page">
 
     <h1 class="brand-title">Bank of CLI</h1>
-
-    <div class="register-card">
-
-        <div class="register-header">
-            <h2>Let’s Make Your Account</h2>
-        </div>
-
+    <mat-icon class="bank-icon">account_balance</mat-icon>
+  
+    <mat-card class="register-card">
+  
+      <mat-card-header class="register-header">
+        <mat-card-title>Let’s Make Your Account</mat-card-title>
+      </mat-card-header>
+  
+      <mat-card-content>
+  
         <form [formGroup]="RegisterForm" (ngSubmit)="onSubmit()">
+  
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>First name</mat-label>
+            <mat-icon matPrefix>person</mat-icon>
+  
+            <input
+              matInput
+              type="text"
+              placeholder="Enter Your First Name"
+              formControlName="firstName"
+            >
+          </mat-form-field>
+  
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Last name</mat-label>
+            <mat-icon matPrefix>person</mat-icon>
 
-            <div class="input-group">
-                <label>First name</label>
-                <input
-                    type="text"
-                    placeholder="Enter Your First Name"
-                    formControlName="firstName"
-                >
-            </div>
+            <input
+              matInput
+              type="text"
+              placeholder="Enter Your Last Name"
+              formControlName="LastName"
+            >
+          </mat-form-field>
+  
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Create username</mat-label>
+            <mat-icon matPrefix>person</mat-icon>
+  
+            <input
+              matInput
+              type="text"
+              placeholder="Enter Your Username"
+              formControlName="username"
+            >
+          </mat-form-field>
+  
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Create password</mat-label>
+            <mat-icon matPrefix>lock</mat-icon>
+  
+            <input
+              matInput
+              type="password"
+              placeholder="Enter Your Password"
+              formControlName="password"
+            >
+          </mat-form-field>
+  
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Confirm password</mat-label>
+            <mat-icon matPrefix>lock</mat-icon>
 
-            <div class="input-group">
-                <label>Last name</label>
-                <input
-                    type="text"
-                    placeholder="Enter Your Last Name"
-                    formControlName="LastName"
-                >
-            </div>
-
-            <div class="input-group">
-                <label>Create username</label>
-                <input
-                    type="text"
-                    placeholder="Enter Your Username"
-                    formControlName="username"
-                >
-            </div>
-
-            <div class="input-group">
-                <label>Create password</label>
-                <input
-                    type="password"
-                    placeholder="Enter Your Password"
-                    formControlName="password"
-                >
-            </div>
-
-            <div class="input-group">
-                <label>Confirm password</label>
-                <input
-                    type="password"
-                    placeholder="Confirm Your Password"
-                    formControlName="confirmPassword"
-                >
-            </div>
-
-            <button type="submit" class="register-button">
-                Register
-            </button>
-
+            <input
+              matInput
+              type="password"
+              placeholder="Confirm Your Password"
+              formControlName="confirmPassword"
+            >
+          </mat-form-field>
+  
+          <button
+            mat-flat-button
+            type="submit"
+            class="register-button"
+          >
+            Register
+          </button>
+  
         </form>
+  
         <p class="login-link">
-            Already have an account?
-            <a routerLink="/">Sign in</a>
+          Already have an account?
+          <a routerLink="/">Sign in</a>
         </p>
-
-    </div>
-
-</div>
+  
+      </mat-card-content>
+  
+    </mat-card>
+  
+  </div>

@@ -1,50 +1,62 @@
 <div class="login-page">
 
     <h1 class="page-title">Bank of CLI</h1>
-
-    <div class="login-card">
-        
+    <mat-icon class="bank-icon">account_balance</mat-icon>
+    <mat-card class="login-card">
+  
+      <mat-card-content>
+  
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-
-            <div class="input-group">
-                <label>Username</label>
-        
-                <input
-                    class="input-login"
-                    type="text"
-                    formControlName="username"
-                    placeholder="Enter your username"
-                >
-            </div>
-        
-            <div class="input-group">
-                <label>Password</label>
-        
-                <input
-                    class="input-login"
-                    type="password"
-                    formControlName="password"
-                    placeholder="Enter your password"
-                >
-            </div>
-        
-            <div class="action-group">
-                <button type="submit" class="login-button">
-                    Sign in
-                </button>
-            </div>
-        
-        </form>
-        <div class="divider">
+  
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Username</mat-label>
+  
+            <mat-icon matPrefix>person</mat-icon>
+  
+            <input
+              matInput
+              type="text"
+              formControlName="username"
+              placeholder="Enter your username"
+            >
+          </mat-form-field>
+  
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Password</mat-label>
+  
+            <mat-icon matPrefix>lock</mat-icon>
+  
+            <input
+              matInput
+              type="password"
+              formControlName="password"
+              placeholder="Enter your password"
+            >
+          </mat-form-field>
+  
+          <button
+            mat-flat-button
+            type="submit"
+            class="sign-in-button"
+          >
+            Sign In
+          </button>
+  
+          <div class="divider">
             <span></span>
             <p>OR</p>
             <span></span>
-        </div>
-
-        <p class="create-account">
+          </div>
+  
+          <p class="create-account">
             Don't have an account?
             <a routerLink="/register">Create Account</a>
-        </p>
-
-    </div>
-</div>
+          </p>
+  
+        </form>
+  
+      </mat-card-content>
+  
+    </mat-card>
+  
+  </div>
