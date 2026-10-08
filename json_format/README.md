@@ -6,5 +6,5 @@ Notes on JSON formats:
 Notes on JSON attribute data types and values:
 - IDs are non-negative integers.
 - Money is represented using non-negative integers of *cents*, rather than floating-point dollar values. This is to avoid floating-point precision issues.
-- The transaction `type` attribute is a String that can have values of `"DEPOSIT"`, `"WITHDRAWAL"`, or `TRANSFER`.
+- The transaction `type` attribute is a String that can have values of `"DEPOSIT"`, `"WITHDRAWAL"`, or `"TRANSFER"`.
 - The `timestamp` attribute, present in transaction and the unsuccessful responses, is a String containing a formatted timestamp (e.g. `"2024-06-01T00:00:00Z"`).
