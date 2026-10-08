@@ -31,8 +31,8 @@ export class Login {
   message = signal('');
 
   loginForm = new FormGroup({
-    username: new FormControl('', [Validators.required, Validators.minLength(1)]),
-    password: new FormControl('', [Validators.required, Validators.minLength(1)])
+    username: new FormControl('', [Validators.required]),
+    password: new FormControl('', [Validators.required])
   });
 
   onSubmit() {
@@ -44,6 +44,21 @@ export class Login {
     }
 
     const form = this.loginForm.value;
+
+    // Check username and password not be blank
+    // ? in form.username?.trim() just means
+    // that If the username is missing, or turns
+    // empty once you strip the spaces, show the message and stop."
+    if (!form.username?.trim()){
+      this.message.set('Username cannot be blank.')
+      console.log('Username is blank.');
+    }
+
+    if (!form.password?.trim()){
+      this.message.set('Password cannot be blank');
+      console.log('Password is blank');
+
+    }
     const loggedIn = this.authService.login(form.username ?? '', form.password ?? '');
 
     if (loggedIn === null) {
@@ -54,7 +69,7 @@ export class Login {
       console.log('Login Successful.');
       setTimeout(() => {
         this.router.navigate(['/dashboard']);
-      }, 1000);
+      }, 100);
     }
   }
 }
