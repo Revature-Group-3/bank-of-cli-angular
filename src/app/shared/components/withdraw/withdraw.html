@@ -5,7 +5,7 @@
 
   <!-- Display the current account balance. -->
   <p>Current Balance</p>
-  <h3>${{ currentBalance().toFixed(2) }}</h3>
+  <h3>{{ currentBalance() | centsIntegerToDollarString }}</h3>
 
   <!-- Enter a withdrawal amount. -->
   <mat-form-field appearance="outline">
@@ -60,6 +60,7 @@
       isLoading() ||
       !!successMessage()
     "
+    [disabled]="withdrawalCents <= 0 || withdrawalCents > currentBalance()"
     (click)="submitWithdrawal()">
     {{ isLoading() ? 'Processing...' : 'Withdraw' }}
   </button>

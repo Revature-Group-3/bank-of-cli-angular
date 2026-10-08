@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 
 import { AuthService } from '../../../services/auth-service';
 import { TransactionService } from '../../../services/transaction-service';
+import { CentsIntegerToDollarStringPipe } from '../../pipes/cents-integer-to-dollar-string-pipe';
 
 // Reuse the team's existing progress bar component.
 import { ProgressBar } from '../../../progress-bar/progress-bar';
@@ -22,6 +23,7 @@ import { ProgressBar } from '../../../progress-bar/progress-bar';
     MatFormFieldModule,
     MatInputModule,
     ProgressBar
+    CentsIntegerToDollarStringPipe
   ],
   templateUrl: './deposit.html',
   styleUrl: './deposit.css',
@@ -43,10 +45,29 @@ export class Deposit {
 
   // Track loading, error, and success messages.
   isLoading = signal(false);
+  // the logged-in user's real balance, in cents (0 if nobody is logged in)
+  currentBalance = computed(() => this.auth.currentUser()?.balance ?? 0);
+
+  // what the user types, in dollars (for example 19.99)
+  depositAmount = 0;
+
+  // the typed amount as whole cents (19.99 becomes 1999), which is what the service expects
+  get depositCents(): number {
+    return Math.round(this.depositAmount * 100);
+  }
+
+  // the service's error message, shown under the input when a deposit is rejected
   errorMessage = signal('');
   successMessage = signal('');
 
   submitDeposit() {
+    const user = this.auth.currentUser();
+
+    // if nobody is logged in, id 0 matches no account and the service returns its 401
+    const result = this.transactions.deposit({
+      accountId: user?.id ?? 0,
+      amount: this.depositCents,
+    });
 
     // Prevent duplicate submissions while processing or after success.
     if (this.isLoading() || this.successMessage()) {
