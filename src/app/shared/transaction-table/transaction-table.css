@@ -58,11 +58,11 @@ table .first-column {
   }
 
   .table-rows {
-    min-height: 350px;
-    width: 100%;
-    flex: 0 0 auto;
-    overflow-y: auto;
-  }
+  min-height: 350px;
+  width: 100%;
+  flex: 0 0 auto;
+  overflow-y: auto;
+}
 
   table .mat-mdc-row {
   height: 65px;
