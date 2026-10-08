@@ -1,7 +1,9 @@
 # For backend/logic devs
+- Used FormGroup to store the data
 - Once user enters a username or password and clicks sign in the data is stored in a JSON structure an example is provided below of how it would look like the same also goes for the register page
     {
         username: "john123",
         password: "password123"
     }
 - I printed out the data into the console log so you can see how it looks
+- The names for the form groups are in the .ts files for the register and login components

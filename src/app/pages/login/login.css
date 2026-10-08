@@ -1,62 +1,83 @@
 .login-page {
-    display: flex;
-    flex-direction: column;
-
-    justify-content: center;
-    align-items: center;
-
     min-height: 100vh;
     width: 100%;
 
-    background-image: url('./images/image.png');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: linear-gradient(
+        to right,
+        #0056b3,
+        #0a2540
+    );
 
     position: relative;
 }
 
+.bank-icon {
+    position: absolute;
+    top: 1.5rem;
+    left: 1.5rem;
+
+    font-size: 2.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+
+    color: white;
+}
+
+/* Title stays independent from the login card */
+.page-title {
+    position: absolute;
+    top: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+
+    margin: 0;
+
+    color: white;
+    font-size: 2rem;
+    font-weight: 400;
+}
+
+/* Login card stays centered on screen */
 .login-card {
-    background-color: #D9D9D9;
     width: 100%;
     max-width: 500px;
+
     padding: 2.5rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+    background-image:
+        linear-gradient(
+            rgba(255, 255, 255, 0.78),
+            rgba(255, 255, 255, 0.78)
+        ),
+        url('./images/image.png');
+
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, 0.25);
 }
 
-.input-group {
-    margin-bottom: 1.5rem;
-    display: flex;
-    flex-direction: column;
+.full-width {
+    width: 100%;
+    margin-bottom: 1rem;
 }
 
-.action-group {
-    margin-top: 2rem;
-}
-
-.input-login {
-    border-radius: 10px;
-    border: 1px solid #7023CE;
+.sign-in-button {
+    width: 100%;
+    height: 44px;
 
     margin-top: 0.5rem;
-    padding: 0.75rem;
 
-    font-size: 1rem;
-}
-
-.action-group button {
-    width: 100%;
-    padding: 0.75rem;
-
-    border: none;
     border-radius: 7px;
-
-    background-color: #3B82F6;
-    color: white;
-
-    font-size: 1rem;
-    cursor: pointer;
 }
 
 .divider {
@@ -64,29 +85,42 @@
     align-items: center;
     gap: 0.75rem;
 
-    margin-top: 1rem;
+    margin: 1.25rem 0;
 }
 
 .divider span {
     flex: 1;
     height: 1px;
-    background-color: #555;
+
+    background-color: #666;
 }
 
 .divider p {
     margin: 0;
-    font-size: 0.8rem;
+
+    color: #444;
 }
 
-.page-title {
-    position: absolute;
-    top: 0.5rem;
+.create-account {
+    text-align: center;
+    margin: 0;
 
-    color: black;
-    font-size: 2rem;
-    font-weight: 400;
+    color: #333;
 }
 
-.login-button:hover {
-    filter: brightness(0.95);
+.create-account a {
+    color: #0056b3;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.create-account a:hover {
+    text-decoration: underline;
+}
+
+.custom-icon {
+    color: #757575;
+    margin-right: 8px;
+
+    transition: color 0.2s ease-in-out;
 }

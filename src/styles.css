@@ -3,3 +3,24 @@ body {
     margin: 0;
     font-family: Arial, sans-serif;
 }
+
+:root {
+    /* Brand colors */
+    --primary-blue: #0056b3;
+    --dark-blue: #0a2540;
+    --accent-purple: #7c6ee6;
+  
+    /* Surfaces */
+    --card-background: #d9d9d9;
+    --input-background: #f8fafc;
+  
+    /* Actions */
+    --primary-button: #0969cf;
+  
+    /* Backgrounds */
+    --page-gradient: linear-gradient(
+      to right,
+      var(--primary-blue),
+      var(--dark-blue)
+    );
+  }
