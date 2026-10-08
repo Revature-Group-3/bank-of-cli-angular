@@ -22,8 +22,8 @@ import { ProgressBar } from '../../../progress-bar/progress-bar';
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
-    ProgressBar
-    CentsIntegerToDollarStringPipe
+    ProgressBar,
+    CentsIntegerToDollarStringPipe,
   ],
   templateUrl: './deposit.html',
   styleUrl: './deposit.css',
@@ -37,97 +37,52 @@ export class Deposit {
   private dialogRef = inject(MatDialogRef);
   private router = inject(Router);
 
-  // Display the logged-in user's current account balance.
+  // The logged-in user's balance is stored in cents.
   currentBalance = computed(() => this.auth.currentUser()?.balance ?? 0);
-
-  // Amount entered by the user.
   depositAmount = 0;
-
-  // Track loading, error, and success messages.
   isLoading = signal(false);
-  // the logged-in user's real balance, in cents (0 if nobody is logged in)
-  currentBalance = computed(() => this.auth.currentUser()?.balance ?? 0);
 
-  // what the user types, in dollars (for example 19.99)
-  depositAmount = 0;
-
-  // the typed amount as whole cents (19.99 becomes 1999), which is what the service expects
   get depositCents(): number {
     return Math.round(this.depositAmount * 100);
   }
 
-  // the service's error message, shown under the input when a deposit is rejected
   errorMessage = signal('');
   successMessage = signal('');
 
   submitDeposit() {
-    const user = this.auth.currentUser();
-
-    // if nobody is logged in, id 0 matches no account and the service returns its 401
-    const result = this.transactions.deposit({
-      accountId: user?.id ?? 0,
-      amount: this.depositCents,
-    });
-
-    // Prevent duplicate submissions while processing or after success.
     if (this.isLoading() || this.successMessage()) {
       return;
     }
 
-    // Start loading and clear previous messages.
+    const user = this.auth.currentUser();
+    const accountId = user?.id ?? 0;
+    const amount = this.depositCents;
     this.isLoading.set(true);
     this.errorMessage.set('');
     this.successMessage.set('');
-
-    // Prevent closing the dialog while processing.
     this.dialogRef.disableClose = true;
 
-    // Store the submitted account and amount.
-    const user = this.auth.currentUser();
-    const amount = this.depositAmount;
-
-    // Temporary 1-second delay while using local mock data.
-    // Remove this delay when using a real HTTP request.
     setTimeout(() => {
-
-      // Call the team's existing deposit service.
       const result = this.transactions.deposit({
-        accountId: user?.id ?? 0,
-        amount: amount
+        accountId,
+        amount,
       });
 
-      // The deposit operation has finished.
       this.isLoading.set(false);
 
-      // Check whether the deposit was rejected.
       if ('status' in result) {
-
-        // Display the existing service's error message.
         this.errorMessage.set(result.message);
-
-        // Allow the user to correct the amount or close the dialog.
         this.dialogRef.disableClose = false;
-
         return;
       }
 
-      // Deposit succeeded.
       this.successMessage.set('Deposit successful!');
 
       // Allow the user to see the success message for 1 second.
       setTimeout(() => {
-
-        // Close the deposit dialog.
         this.dialogRef.close(result);
-
-        // Return to the dashboard without reloading the page.
-        // The updated balance comes from the existing AuthService.
         this.router.navigate(['/dashboard']);
-
-      }, 1000); // End success-message delay.
-
-    }, 1000); // End transaction-processing delay.
-
-  } // End submitDeposit().
-
-} // End Deposit class.
+      }, 1000);
+    }, 1000);
+  }
+}

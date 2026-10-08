@@ -55,12 +55,11 @@
   <button
     mat-raised-button
     [disabled]="
-      withdrawalAmount <= 0 ||
-      withdrawalAmount > currentBalance() ||
+      withdrawalCents <= 0 ||
+      withdrawalCents > currentBalance() ||
       isLoading() ||
       !!successMessage()
     "
-    [disabled]="withdrawalCents <= 0 || withdrawalCents > currentBalance()"
     (click)="submitWithdrawal()">
     {{ isLoading() ? 'Processing...' : 'Withdraw' }}
   </button>

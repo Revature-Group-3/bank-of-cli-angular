@@ -14,7 +14,7 @@
 }
 
 .table-rows {
-  min-height: 173px;
+  height: 173px;
   flex: 0 0 auto;
   overflow-y: auto;
 }
@@ -58,7 +58,7 @@ table .first-column {
   }
 
   .table-rows {
-  min-height: 350px;
+  height: 350px;
   width: 100%;
   flex: 0 0 auto;
   overflow-y: auto;

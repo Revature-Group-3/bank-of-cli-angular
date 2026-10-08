@@ -69,12 +69,11 @@
   <button
     mat-raised-button
     [disabled]="
-      transferAmount <= 0 ||
-      transferAmount > currentBalance() ||
+      transferCents <= 0 ||
+      transferCents > currentBalance() ||
       isLoading() ||
       !!successMessage()
     "
-    [disabled]="transferCents <= 0 || transferCents > currentBalance()"
     (click)="submitTransfer()">
     {{ isLoading() ? 'Processing...' : 'Transfer' }}
   </button>
