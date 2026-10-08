@@ -1,0 +1,37 @@
+<!-- For now it only displays the word deposit and account balance but in the future if we have more accounts we can display a account drop down list. -->
+<h2 mat-dialog-title>Withdraw</h2>
+
+<mat-dialog-content>
+
+  <p>Current Balance</p>
+  <h3>${{ currentBalance.toFixed(2) }}</h3>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Withdraw Amount</mat-label>
+    <!--Ensure the input is a positive number of at least 1 cent-->
+    <input
+      matInput
+      type="number"
+      min="0.01"
+      step="0.01"
+      [(ngModel)]="withdrawalAmount"
+    >
+
+  </mat-form-field>
+
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>
+    Cancel
+  </button>
+
+  <!--Disables the withdraw button if the withdrawalAmount surpasses the currentBalance-->
+  <button
+    mat-raised-button
+    [disabled]="withdrawalAmount <= 0 || withdrawalAmount > currentBalance"
+    (click)="submitWithdrawal()">
+    Withdraw
+  </button>
+</mat-dialog-actions>
