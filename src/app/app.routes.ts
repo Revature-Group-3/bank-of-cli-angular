@@ -4,6 +4,7 @@ import { Register } from './pages/register/register';
 import { Dashboard } from './pages/dashboard/dashboard';
 import { TransactionCenter } from './pages/transaction-center/transaction-center';
 import { ViewTransactions } from './pages/view-transactions/view-transactions';
+import { TransactionTest } from './pages/transaction-test/transaction-test';
 
 export const routes: Routes = [
   { path: '', component: Login },
@@ -11,4 +12,5 @@ export const routes: Routes = [
   { path: 'dashboard', component: Dashboard },
   { path: 'transaction', component: TransactionCenter },
   { path: 'view-transactions', component: ViewTransactions },
+  { path: 'transaction-test', component: TransactionTest },
 ];

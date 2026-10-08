@@ -1,1 +1,33 @@
-<p>dashboard works!</p>
+<!-- Dashboard grid -->
+<div #dashboard class="responsive-grid">
+    <!-- Welcome card -->
+    <mat-card class="welcome-card grid-item">
+        <mat-card-header>
+            <mat-card-title>Welcome to your Bank of CLI dashboard, {{ firstName() }}!</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <p>Check your balance, review recent activity, and make transactions, all in one place.</p>
+        </mat-card-content>
+    </mat-card>
+
+    <!-- Balance card -->
+    <mat-card class="balance-card grid-item">
+        <mat-card-header>
+            <mat-card-title>Account Balance</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <p class="balance-display">{{ balance() | currency }}</p>
+        </mat-card-content>
+    </mat-card>
+
+    <!-- Recent transaction history card -->
+    <mat-card class="transaction-history-card grid-item">
+        <mat-card-header>
+            <mat-card-title>Recent Activity</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <p>Browse your recent transactions below:</p>
+            <app-transaction-table class="transaction-history-table"></app-transaction-table>
+        </mat-card-content>
+    </mat-card>
+</div>

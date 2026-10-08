@@ -1,0 +1,10 @@
+<!-- renders component if validationVisible() is true -->
+@if (validationVisible()) {
+    <div class="backdrop" (click)="close()">
+        <div class="box" role="alertdialog" aria-modal="true" (click)="$event.stopPropagation()">
+            <h2>{{ validationResult() }}</h2>
+            <p>{{ validationMessage() }}</p>
+            <button type="button" (click)="close()">Close</button>
+        </div>
+    </div>
+}

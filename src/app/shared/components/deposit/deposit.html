@@ -1,0 +1,35 @@
+<!-- For now it only displays the word deposit and account balance but in the future if we have more accounts we can display a account drop down list. -->
+<h2 mat-dialog-title>Deposit</h2>
+
+<mat-dialog-content>
+
+  <p>Current Balance</p>
+  <h3>${{ currentBalance().toFixed(2) }}</h3>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Deposit Amount</mat-label>
+    <!--Ensure the input is a positive number of at least 1 cent-->
+    <input
+      matInput
+      type="number"
+      min="0.01"
+      step="0.01"
+      [(ngModel)]="depositAmount"
+    >
+  </mat-form-field>
+
+  @if (errorMessage()) {
+    <p class="error">{{ errorMessage() }}</p>
+  }
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>
+    Cancel
+  </button>
+
+  <button mat-raised-button (click)="submitDeposit()">
+    Deposit
+  </button>
+</mat-dialog-actions>
