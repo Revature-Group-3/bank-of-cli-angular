@@ -11,8 +11,9 @@ import {
   WithdrawalRequest,
 } from '../models/transaction';
 
-// the most that can be deposited or transferred in a single transaction
-export const MAX_TRANSACTION_AMOUNT = 10000;
+// all money in this service is in whole cents: 1999 means $19.99
+// the most that can be deposited or transferred in a single transaction: $10,000.00
+export const MAX_TRANSACTION_AMOUNT = 1_000_000;
 
 @Service()
 export class TransactionService {
@@ -30,8 +31,8 @@ export class TransactionService {
       return this.error(401, 'You must be logged in to make a transaction.');
     }
 
-    // rule: the amount must be a real number above zero
-    if (!(request.amount > 0)) {
+    // rule: the amount must be a whole number of cents, above zero
+    if (!Number.isInteger(request.amount) || request.amount <= 0) {
       return this.error(400, 'The transaction amount must be greater than zero.');
     }
 
@@ -64,8 +65,8 @@ export class TransactionService {
       return this.error(401, 'You must be logged in to make a transaction.');
     }
 
-    // rule: the amount must be a real number above zero
-    if (!(request.amount > 0)) {
+    // rule: the amount must be a whole number of cents, above zero
+    if (!Number.isInteger(request.amount) || request.amount <= 0) {
       return this.error(400, 'The transaction amount must be greater than zero.');
     }
 
@@ -96,8 +97,8 @@ export class TransactionService {
       return this.error(401, 'You must be logged in to make a transaction.');
     }
 
-    // rule: the amount must be a real number above zero
-    if (!(request.amount > 0)) {
+    // rule: the amount must be a whole number of cents, above zero
+    if (!Number.isInteger(request.amount) || request.amount <= 0) {
       return this.error(400, 'The transaction amount must be greater than zero.');
     }
 
