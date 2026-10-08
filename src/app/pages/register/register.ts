@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth-service';
 
 import { MatInputModule } from '@angular/material/input';
@@ -22,14 +22,19 @@ export class Register {
   message = signal('');
 
   RegisterForm = new FormGroup({
-    firstName: new FormControl(''),
-    lastName: new FormControl(''),
-    username: new FormControl(''),
-    password: new FormControl(''),
-    confirmPassword: new FormControl('')
+    firstName: new FormControl('', Validators.required),
+    lastName: new FormControl('', Validators.required),
+    username: new FormControl('', Validators.required),
+    password: new FormControl('', Validators.required),
+    confirmPassword: new FormControl('', Validators.required)
   });
 
   onSubmit() {
+    if (this.RegisterForm.invalid) {
+      this.RegisterForm.markAllAsTouched();
+      return;
+    }
+
     const form = this.RegisterForm.value;
 
     const created = this.authService.register({
@@ -41,8 +46,10 @@ export class Register {
     });
 
     if (created === null) {
-      this.message.set('Username is already taken :( ... Please use another username.');
+      this.message.set('Username is already taken, please use another username.');
       console.log('Could not create account.');
+    } else if (form.password !== form.confirmPassword) {
+      this.message.set('Passwords do not match.');
     } else {
       this.message.set('Account created! Hold on while we re-direct you to the login page...');
       setTimeout(() => {
