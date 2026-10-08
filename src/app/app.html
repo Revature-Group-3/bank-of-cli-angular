@@ -1,0 +1,28 @@
+<!-- For logged-in viewers -->
+@if(loggedIn() != null) {
+    <!-- App container: split between navbar and main content -->
+
+     <!-- animate.leave only reliably fires on the element the @if
+      actually removes, which is the outer mat-sidenav-container.
+      Putting it on the children is hit-or-miss, because Angular
+      may tear them down along with their parent instead of waiting for them.
+      The robust pattern: keep one animate.leave on the container,
+      and use that class to animate the children-->
+
+    <mat-sidenav-container class="app-container" animate.leave="leaving">
+        <!-- Left side: sidenav -->
+        <mat-sidenav mode="side" opened class="app-sidebar">
+            <app-navbar></app-navbar>
+        </mat-sidenav>
+
+        <!-- Right side: main content -->
+        <mat-sidenav-content class="app-content">
+            <router-outlet />
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+}
+
+<!-- For logged-out viewers -->
+@else {
+    <router-outlet />
+}
