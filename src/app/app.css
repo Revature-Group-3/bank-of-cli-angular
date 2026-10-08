@@ -1,0 +1,65 @@
+.app-container {
+  height: 100vh;
+  width: 100vw;
+  background: transparent;
+}
+
+.app-sidebar {
+  width: 150px;
+  background: white;
+  /*
+  A transition only animates when a value changes on an element that already exists. Here the navbar
+  is created fresh by the @if, already in its final position, so there's nothing to transition between.
+  So we can't use transitionX() nor transform. Instead we can use an animation with @keyframes.
+  */
+  animation: slide-in 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.app-content{
+  animation : push-in 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/*Container holds for 0.4s so Angular waits before removing it*/
+/* forwards is the animation fill mode*/
+.app-container.leaving {
+  animation: hold 0.4s forwards;
+}
+
+/* Sidebar (the white panel) slides off the left*/
+.app-container.leaving .app-sidebar {
+  animation: slide-out 0.4s ease-in forwards;
+
+}
+
+/* Content slides back to the left edge as the gap closes*/
+.app-container.leaving .app-content {
+  animation: slide-out-content 0.4s ease-in forwards;
+}
+
+/*
+When loggedIn() turns null, Angular adds the slide-out class, waits for
+the animation to finish, and only then removes the element.
+*/
+@keyframes slide-in{
+  from { transform: translateX(-100%);}
+  to {  transform: translateX(0);}
+}
+
+@keyframes push-in{
+  from  { margin-left: 0; }
+  to    { margin-left: 150px; }
+
+}
+
+@keyframes hold{
+  from  { opacity :1;}
+  to  { opacity :1;}
+}
+
+@keyframes slide-out{
+to { transform: translateX(-100%);}
+}
+
+@keyframes slide-out-content{
+  to    { margin-left: 0;}
+}

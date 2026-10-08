@@ -1,8 +1,14 @@
+<<<<<<< HEAD
 import { CurrencyPipe } from '@angular/common';
 import { Component, computed, inject } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { AuthService } from '../../services/auth-service';
 import { TransactionService } from '../../services/transaction-service';
+=======
+import { Component } from '@angular/core';
+import { MatTableModule } from '@angular/material/table';
+import { CentsIntegerToDollarStringPipe } from '../pipes/cents-integer-to-dollar-string-pipe';
+>>>>>>> e09874296338b11a635ea4a8d2a4cabc16a2a708
 
 // what one table row looks like
 interface TransactionRow {
@@ -12,8 +18,50 @@ interface TransactionRow {
   amount: number;
 }
 
+<<<<<<< HEAD
+=======
+export const transactionData: Transaction[] = [
+  {
+    transactionType: 'Deposit',
+    date: 'Oct 1, 2026',
+    transactionStatus: 'Completed',
+    amount: 12000,
+  },
+  {
+    transactionType: 'Withdraw',
+    date: 'Oct 1, 2026',
+    transactionStatus: 'Completed',
+    amount: 1200,
+  },
+  {
+    transactionType: 'Transfer',
+    date: 'Oct 3, 2026',
+    transactionStatus: 'Pending',
+    amount: 12000,
+  },
+  {
+    transactionType: 'Transfer',
+    date: 'Oct 3, 2026',
+    transactionStatus: 'Failed',
+    amount: 12000,
+  },
+  {
+    transactionType: 'Deposit',
+    date: 'Oct 13, 2026',
+    transactionStatus: 'Success',
+    amount: 1000,
+  },
+  {
+    transactionType: 'Deposit',
+    date: 'Oct 13, 2026',
+    transactionStatus: 'Success',
+    amount: 100000,
+  }
+];
+
+>>>>>>> e09874296338b11a635ea4a8d2a4cabc16a2a708
 @Component({
-  imports: [MatTableModule, CurrencyPipe],
+  imports: [MatTableModule, CentsIntegerToDollarStringPipe],
   selector: 'app-transaction-table',
   styleUrl: './transaction-table.css',
   templateUrl: './transaction-table.html',

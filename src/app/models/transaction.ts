@@ -35,3 +35,7 @@ export interface TransferRequest {
   amount: number;
 }
 
+// what the service sends back when asked for an account's recent transactions
+export interface RecentTransactionsResponse {
+  transactions: Transaction[];
+}

@@ -14,7 +14,7 @@
       </ng-container>
       <ng-container matColumnDef="Amount">
         <th mat-header-cell *matHeaderCellDef>Amount</th>
-        <td mat-cell *matCellDef="let transaction">{{ transaction.amount | currency:'USD' }}</td>
+        <td mat-cell *matCellDef="let transaction">{{ transaction.amount | centsIntegerToDollarString }}</td>
       </ng-container>
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let transaction; columns: displayedColumns"></tr>

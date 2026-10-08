@@ -1,8 +1,14 @@
-<mat-toolbar>
-  <span>Bank of CLI</span>
+<!-- Navbar component -->
+<mat-action-list class="navbar">
+  <!-- Branding -->
+  <div class="brand">Bank of CLI</div>
 
+  <!-- Transaction buttons -->
+  <button mat-list-item (click)="openDeposit()">Deposit</button>
+  <button mat-list-item (click)="openWithdraw()">Withdraw</button>
+  <button mat-list-item (click)="openTransfer()">Transfer</button>
   <span class="spacer"></span>
 
-  <a mat-button>Account</a>
-  <a mat-button>Sign out</a>
-</mat-toolbar>
+  <!-- Signout button -->
+  <button mat-list-item (click)="onSignOut()">Sign Out</button>
+</mat-action-list>

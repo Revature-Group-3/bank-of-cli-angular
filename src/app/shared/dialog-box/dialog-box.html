@@ -1,0 +1,19 @@
+<div class="dialog-container">
+
+<h2 mat-dialog-title align="center">{{ data.title }}</h2>
+
+<mat-dialog-content>
+    <div class ="button-list">
+      @for (option of data.options; track option) {
+        <button mat-button class="dialog-option" (click) = "selectOption(option.action)">
+          {{ option.label }}
+        </button>
+      }
+    </div>
+
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+  </mat-dialog-actions>
+</mat-dialog-content>
+
+</div>

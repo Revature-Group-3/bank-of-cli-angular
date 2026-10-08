@@ -1,0 +1,74 @@
+import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogBox } from '../../shared/dialog-box/dialog-box';
+import { MatButtonModule } from '@angular/material/button';
+import { LocateAtm } from '../../shared/components/locate-atm/locate-atm';
+import { Deposit } from '../../shared/components/deposit/deposit';
+
+@Component({
+  standalone: true,
+  imports: [MatButtonModule],
+  selector: 'app-transaction-test',
+  styleUrl: './transaction-test.css',
+  templateUrl: './transaction-test.html',
+})
+
+export class TransactionTest {
+
+  constructor(private dialog: MatDialog) {}
+
+  openDepositDialog() {
+
+    const dialogRef = this.dialog.open(DialogBox, {
+      width: '400px',
+      data: {
+        title: 'Deposit Options',
+        options: [
+          { label: 'Deposit', action: 'deposit' },
+          { label: 'Cash Deposit', action: 'cashDeposit' },
+          { label: 'Check Deposit', action: 'checkDeposit' },
+          { label: 'Setup Direct Deposit', action: 'directDeposit' }
+        ]
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(action => {
+
+      if (action === 'deposit') {
+        this.selectDeposit();
+      }
+
+      if (action === 'cashDeposit') {
+        this.selectCashDeposit();
+      }
+
+      if (action === 'checkDeposit') {
+        this.selectCheckDeposit();
+      }
+
+      if (action === 'directDeposit') {
+        this.selectDirectDeposit();
+      }
+
+    });
+  }
+
+  selectDeposit() {
+    this.dialog.open(Deposit, { width:'400px' })
+  }
+
+  selectCashDeposit() {
+    this.dialog.open(LocateAtm, { width: '600px' });
+  }
+
+  selectCheckDeposit() {
+    console.log('Opening check deposit');
+  }
+
+  selectDirectDeposit() {
+    console.log('Opening direct deposit');
+  }
+
+
+
+}
