@@ -1,0 +1,17 @@
+.dialog-option {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.button-list {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+}
+
+.dialog-container {
+  overflow: hidden; /* Removes both horizontal and vertical scrollbars */
+}

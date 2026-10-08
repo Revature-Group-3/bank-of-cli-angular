@@ -1,0 +1,18 @@
+.navbar {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 16px 0;
+  box-sizing: border-box;
+}
+
+.brand {
+  font-weight: bold;
+  font-size: 1.2rem;
+  padding: 8px 16px 24px 16px;
+  text-align: left;
+}
+
+.spacer {
+  flex-grow: 1;
+}
