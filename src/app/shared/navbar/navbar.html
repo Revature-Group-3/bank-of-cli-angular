@@ -4,11 +4,11 @@
   <div class="brand">Bank of CLI</div>
 
   <!-- Transaction buttons -->
-  <button mat-list-item /*(click)=""*/>Deposit</button>
-  <button mat-list-item /*(click)=""*/>Withdraw</button>
-  <button mat-list-item /*(click)=""*/>Transfer</button>
+  <button mat-list-item (click)="openDeposit()">Deposit</button>
+  <button mat-list-item (click)="openWithdraw()">Withdraw</button>
+  <button mat-list-item (click)="openTransfer()">Transfer</button>
   <span class="spacer"></span>
 
   <!-- Signout button -->
-  <button mat-list-item /*(click)=""*/>Sign Out</button>
+  <button mat-list-item (click)="onSignOut()">Sign Out</button>
 </mat-action-list>

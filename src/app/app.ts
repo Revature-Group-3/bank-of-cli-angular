@@ -12,6 +12,11 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 })
 export class App {
   protected readonly title = signal('bank-of-cli-angular');
+  sidebarOpen = signal(false);
+
+  constructor(){
+    setTimeout(() => this.sidebarOpen.set(true));
+  }
 
   // Detects whether user is logged in or not
   private authService = inject(AuthService);
