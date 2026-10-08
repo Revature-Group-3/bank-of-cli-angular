@@ -4,8 +4,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { AuthService } from '../../services/auth-service';
-import { TransactionService } from '../../services/transaction-service';
+import { AuthService } from '../../../services/auth-service';
+import { TransactionService } from '../../../services/transaction-service';
 
 @Component({
   selector: 'app-deposit',
