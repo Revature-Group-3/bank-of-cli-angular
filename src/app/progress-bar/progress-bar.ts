@@ -13,7 +13,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 // Add ProgressBar to import
 // Call indeterminate loading bar with <app-progress-bar [showProgress]="isLoading()" /> in the template
 // Call determinate loading bar with
-//                 <app-progress-bar [showProgress]="isLoading()" progressMode="determinate" [progressValue]="percent()" /> 
+//                 <app-progress-bar [showProgress]="isLoading()" progressMode="determinate" [progressValue]="progressValue()" /> 
 // in the template
 
 export class ProgressBar {

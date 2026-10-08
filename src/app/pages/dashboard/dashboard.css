@@ -1,17 +1,101 @@
-.responsive-grid {
-    display: grid;
-    grid-template-columns: 1fr; 
-    grid-auto-rows: auto; 
-    gap: 16px;
-    margin: 16px;
+/* =========================
+   Dashboard Page
+   ========================= */
+
+   :host {
+    display: block;
+    min-height: 100vh;
+
+    background: linear-gradient(
+        to right,
+        #0056b3,
+        #0a2540
+    );
 }
 
-.grid-item {
-    display: flex;
-    flex-direction: column;
+
+/* =========================
+   Dashboard Grid
+   ========================= */
+
+   .responsive-grid {
+    display: grid;
+    background: transparent;
+    padding: 1.5rem;
+    gap: 1.5rem;
 }
+
+/* =========================
+   Dashboard Cards
+   ========================= */
+
+.welcome-card,
+.balance-card,
+.transaction-history-card {
+    background-color: #e2e4e7;
+
+    color: #111827;
+
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 16px;
+
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+
+
+/* =========================
+   Card Titles
+   ========================= */
+
+mat-card-title {
+    color: #111827;
+
+    font-weight: 700;
+}
+
+
+/* =========================
+   Card Body Text
+   ========================= */
+
+mat-card-content,
+mat-card-content p {
+    color: #374151;
+}
+
+
+/* =========================
+   Account Balance
+   ========================= */
 
 .balance-display {
-    font-size: 20px;
-    font-weight: bold;
+    padding-bottom: 1.5rem;
+    color: #0056b3;
+
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+
+/* =========================
+   Transaction History
+   ========================= */
+
+.transaction-history-table {
+    display: block;
+
+    margin-top: 1rem;
+}
+
+
+/* =========================
+   Mobile
+   ========================= */
+
+@media (max-width: 600px) {
+
+    .responsive-grid {
+        padding: 1rem;
+        gap: 1rem;
+    }
 }

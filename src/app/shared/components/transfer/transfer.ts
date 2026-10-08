@@ -7,9 +7,12 @@ import { MatInputModule } from '@angular/material/input';
 import { AuthService } from '../../../services/auth-service';
 import { TransactionService } from '../../../services/transaction-service';
 import { CentsIntegerToDollarStringPipe } from '../../pipes/cents-integer-to-dollar-string-pipe';
+import { NumericInputDirective } from '../../directives/numeric-input-directive';
+
 
 @Component({
   imports: [
+    NumericInputDirective,
     FormsModule,
     MatButtonModule,
     MatDialogModule,
@@ -31,11 +34,11 @@ export class Transfer {
   currentBalance = computed(() => this.auth.currentUser()?.balance ?? 0);
 
   // what the user types, in dollars (for example 19.99)
-  transferAmount = 0;
+  transferAmount: number | null = null;
 
   // the typed amount as whole cents (19.99 becomes 1999), which is what the service expects
   get transferCents(): number {
-    return Math.round(this.transferAmount * 100);
+    return Math.round((this.transferAmount ?? 0) * 100);
   }
 
   // the recipient's username, as typed by the user

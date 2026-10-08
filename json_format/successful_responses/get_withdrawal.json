@@ -1,7 +1,7 @@
 {
-    "id": 0,
-    "accountId": 0,
+    "id": 51,
+    "accountId": 51,
     "type": "WITHDRAWAL",
-    "amount": 0,
+    "amount": 51,
     "timestamp": "2024-06-01T00:00:00Z"
 }
