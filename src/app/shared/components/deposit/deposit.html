@@ -1,4 +1,4 @@
-<!-- For now it only displays the word deposit and account balance but in the future if we have more accounts we can display a account drop down list. -->
+
 <h2 mat-dialog-title>Deposit</h2>
 
 <mat-dialog-content>
@@ -8,28 +8,57 @@
 
   <mat-form-field appearance="outline">
     <mat-label>Deposit Amount</mat-label>
-    <!--Ensure the input is a positive number of at least 1 cent-->
+
     <input
       matInput
       type="number"
       min="0.01"
       step="0.01"
       [(ngModel)]="depositAmount"
+      [disabled]="isLoading() || successMessage() !== ''"
     >
   </mat-form-field>
+
+  <!-- Show the progress bar while processing. -->
+  <app-progress-bar
+    [showProgress]="isLoading()">
+  </app-progress-bar>
+
+  <!-- Display the transaction outcome. -->
+  @if (isLoading()) {
+    <p>Processing deposit...</p>
+  }
 
   @if (errorMessage()) {
     <p class="error">{{ errorMessage() }}</p>
   }
 
+  @if (successMessage()) {
+    <p>{{ successMessage() }}</p>
+  }
+
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close>
+
+  <button
+    mat-button
+    mat-dialog-close
+    [disabled]="isLoading() || successMessage() !== ''">
     Cancel
   </button>
 
-  <button mat-raised-button (click)="submitDeposit()">
-    Deposit
+  <button
+    mat-raised-button
+    [disabled]="isLoading() || successMessage() !== ''"
+    (click)="submitDeposit()">
+
+    @if (isLoading()) {
+      Processing...
+    } @else {
+      Deposit
+    }
+
   </button>
+
 </mat-dialog-actions>
