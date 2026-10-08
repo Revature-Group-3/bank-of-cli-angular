@@ -5,7 +5,7 @@ import { Dashboard } from './pages/dashboard/dashboard';
 import { TransactionCenter } from './pages/transaction-center/transaction-center';
 import { ViewTransactions } from './pages/view-transactions/view-transactions';
 import { TransactionTest } from './pages/transaction-test/transaction-test';
-import { Test } from './pages/test/test',
+import { Test } from './pages/test/test';
 import { loggedInGuard } from './shared/guards/logged-in-guard';
 
 export const routes: Routes = [
