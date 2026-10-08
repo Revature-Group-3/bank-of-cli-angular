@@ -118,4 +118,35 @@ describe('TransactionService', () => {
     expect(result).toMatchObject({ status: 400, message: expect.stringContaining('limit') });
     expect(auth.currentUser()?.balance).toBe(1500);
   });
+
+  it("lists the logged-in account's transactions, newest first", () => {
+    service.deposit({ accountId: 1, amount: 50 });
+    service.withdraw({ accountId: 1, amount: 20 });
+    service.transfer({ senderAccountId: 1, recipientAccountId: 2, amount: 100 });
+
+    const result = service.getRecentTransactions(1);
+
+    expect(result).toMatchObject({
+      transactions: [{ type: 'TRANSFER' }, { type: 'WITHDRAWAL' }, { type: 'DEPOSIT' }],
+    });
+  });
+
+  it("shows a transfer to the recipient too, but not the sender's other transactions", () => {
+    service.deposit({ accountId: 1, amount: 50 });
+    service.transfer({ senderAccountId: 1, recipientAccountId: 2, amount: 100 });
+    auth.logout();
+    auth.login('js@email.com', 'lantern');
+
+    const result = service.getRecentTransactions(2);
+
+    expect(result).toEqual({
+      transactions: [expect.objectContaining({ type: 'TRANSFER', recipientAccountId: 2 })],
+    });
+  });
+
+  it("rejects a request for another account's transactions", () => {
+    const result = service.getRecentTransactions(2);
+
+    expect(result).toMatchObject({ status: 401 });
+  });
 });

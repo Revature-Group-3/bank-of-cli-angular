@@ -3,6 +3,7 @@ import { AuthService } from './auth-service';
 import { ApiError } from '../models/api-error';
 import {
   DepositRequest,
+  RecentTransactionsResponse,
   StandardTransaction,
   Transaction,
   TransferRequest,
@@ -136,6 +137,27 @@ export class TransactionService {
 
     this.transactions.update(list => [...list, transaction]);
     return transaction;
+  }
+
+  getRecentTransactions(accountId: number): RecentTransactionsResponse | ApiError {
+    const account = this.auth.currentUser();
+
+    // rule: you can only view the transactions of the account you are logged in to
+    if (!account || account.id !== accountId) {
+      return this.error(401, 'You must be logged in to view your recent transactions.');
+    }
+
+    const transactions = this.transactions()
+      // keep the ones this account took part in
+      .filter(t =>
+        t.type === 'TRANSFER'
+          ? t.senderAccountId === accountId || t.recipientAccountId === accountId
+          : t.accountId === accountId,
+      )
+      // newest first
+      .reverse();
+
+    return { transactions };
   }
 
   // builds an error shaped like the contract's unsuccessful responses
