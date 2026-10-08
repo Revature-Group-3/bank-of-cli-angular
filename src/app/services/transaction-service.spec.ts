@@ -20,6 +20,7 @@ describe('TransactionService', () => {
       .expectOne('/accounts.json')
       .flush([
         { id: 1, firstName: 'Hal', lastName: 'Jordan', username: 'hal@email.com', password: 'green', balance: 1500 },
+        { id: 2, firstName: 'John', lastName: 'Stewart', username: 'js@email.com', password: 'lantern', balance: 320.5 },
       ]);
     auth.login('hal@email.com', 'green');
   });
@@ -79,5 +80,42 @@ describe('TransactionService', () => {
 
     expect(result).toMatchObject({ type: 'DEPOSIT' });
     expect(auth.currentUser()?.balance).toBe(11500);
+  });
+
+  it('moves money from the sender to the recipient and returns the transaction', () => {
+    const result = service.transfer({ senderAccountId: 1, recipientAccountId: 2, amount: 100 });
+
+    expect(result).toMatchObject({ senderAccountId: 1, recipientAccountId: 2, type: 'TRANSFER', amount: 100 });
+    expect(auth.currentUser()?.balance).toBe(1400);
+    expect(auth.getAccountByID(2)?.balance).toBe(420.5);
+  });
+
+  it('rejects a transfer to your own account', () => {
+    const result = service.transfer({ senderAccountId: 1, recipientAccountId: 1, amount: 100 });
+
+    expect(result).toMatchObject({ status: 400 });
+    expect(auth.currentUser()?.balance).toBe(1500);
+  });
+
+  it('rejects a transfer to an account that does not exist', () => {
+    const result = service.transfer({ senderAccountId: 1, recipientAccountId: 99, amount: 100 });
+
+    expect(result).toMatchObject({ status: 404 });
+    expect(auth.currentUser()?.balance).toBe(1500);
+  });
+
+  it('rejects a transfer larger than the sender balance and changes neither account', () => {
+    const result = service.transfer({ senderAccountId: 1, recipientAccountId: 2, amount: 2000 });
+
+    expect(result).toMatchObject({ status: 400 });
+    expect(auth.currentUser()?.balance).toBe(1500);
+    expect(auth.getAccountByID(2)?.balance).toBe(320.5);
+  });
+
+  it('rejects a transfer over the limit', () => {
+    const result = service.transfer({ senderAccountId: 1, recipientAccountId: 2, amount: 10000.01 });
+
+    expect(result).toMatchObject({ status: 400, message: expect.stringContaining('limit') });
+    expect(auth.currentUser()?.balance).toBe(1500);
   });
 });
