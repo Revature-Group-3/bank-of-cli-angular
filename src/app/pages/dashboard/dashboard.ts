@@ -1,9 +1,6 @@
 import { Component, computed, inject } from '@angular/core';
 import { AuthService } from '../../services/auth-service';
 
-// RouterLink is for any links that might need to be added to the dashboard
-import { RouterLink } from '@angular/router';
-
 // For money
 import { CentsIntegerToDollarStringPipe } from '../../shared/pipes/cents-integer-to-dollar-string-pipe';
 
@@ -13,7 +10,7 @@ import { TransactionTable } from '../../shared/transaction-table/transaction-tab
 
 // User-facing dashboard
 @Component({
-  imports: [RouterLink, CentsIntegerToDollarStringPipe, MatCardModule, TransactionTable],
+  imports: [CentsIntegerToDollarStringPipe, MatCardModule, TransactionTable],
   selector: 'app-dashboard',
   styleUrl: './dashboard.css',
   templateUrl: './dashboard.html',
