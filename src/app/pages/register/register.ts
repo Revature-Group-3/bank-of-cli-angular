@@ -24,11 +24,11 @@ export class Register {
   message = signal('');
 
   RegisterForm = new FormGroup({
-    firstName: new FormControl('', [Validators.required, Validators.minLength(1)]),
-    lastName: new FormControl('', [Validators.required, Validators.minLength(1)]),
-    username: new FormControl('', [Validators.required, Validators.minLength(1)]),
-    password: new FormControl('', [Validators.required, Validators.minLength(1)]),
-    confirmPassword: new FormControl('', [Validators.required, Validators.minLength(1)])
+    firstName: new FormControl('', [Validators.required]),
+    lastName: new FormControl('', [Validators.required]),
+    username: new FormControl('', [Validators.required]),
+    password: new FormControl('', [Validators.required]),
+    confirmPassword: new FormControl('', [Validators.required])
   });
 
   onSubmit() {
@@ -39,10 +39,26 @@ export class Register {
       console.log('Form not filled.');
       return;
     }
+    const form = this.RegisterForm.value;
+
+    // Make sure white space is not accepted
+    if ( !form.firstName?.trim() ){
+      this.message.set('First name cannot be blank.');
+      return;
+    }
+
+    if (!form.lastName?.trim()){
+      this.message.set('Last name cannot be blank.');
+      return;
+    }
+
+    if (!form.username?.trim()){
+      this.message.set('Username cannot be blank.');
+      return;
+    }
 
     // Confirm Password with confirm password
-    const form = this.RegisterForm.value;
-    if (form.password !== form.confirmPassword){
+    if (form.password?.trim() !== form.confirmPassword){
       this.message.set('Password do not match.');
       return;
     }
@@ -64,7 +80,7 @@ export class Register {
       this.message.set('Account created! Hold on while we re-direct you to the login page...');
       setTimeout(() => {
         this.redirectLogin.navigate(['/']);
-      }, 2000);
+      }, 500);
     }
   }
 }

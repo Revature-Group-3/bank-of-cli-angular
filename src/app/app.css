@@ -12,28 +12,31 @@
   is created fresh by the @if, already in its final position, so there's nothing to transition between.
   So we can't use transitionX() nor transform. Instead we can use an animation with @keyframes.
   */
-  animation: slide-in 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  animation: slide-in 1s cubic-bezier(0.25, 1, 0.5, 1) 1s;
 }
 
 .app-content{
-  animation : push-in 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  animation : push-in 1s cubic-bezier(0.25, 1, 0.5, 1) 1s;
 }
 
 /*Container holds for 0.4s so Angular waits before removing it*/
 /* forwards is the animation fill mode*/
 .app-container.leaving {
-  animation: hold 0.4s forwards;
+  animation-delay: 0.2s;
+  animation: hold 0.8s forwards;
 }
 
 /* Sidebar (the white panel) slides off the left*/
 .app-container.leaving .app-sidebar {
-  animation: slide-out 0.4s ease-in forwards;
+  animation-delay: 0.2s;
+  animation: slide-out 0.8s ease-in forwards;
 
 }
 
 /* Content slides back to the left edge as the gap closes*/
 .app-container.leaving .app-content {
-  animation: slide-out-content 0.4s ease-in forwards;
+  animation-delay: 0.2s;
+  animation: slide-out-content 0.8s ease-in forwards;
 }
 
 /*
