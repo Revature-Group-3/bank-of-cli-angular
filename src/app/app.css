@@ -15,54 +15,69 @@
   animation: slide-in 1s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-.app-content{
-  animation : push-in 1s cubic-bezier(0.25, 1, 0.5, 1);
+.app-content {
+  animation: push-in 1s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 /*Container holds for 0.4s so Angular waits before removing it*/
 /* forwards is the animation fill mode*/
 .app-container.leaving {
-  animation-delay: 0.2s;
-  animation: hold 0.8s forwards;
+  animation: hold 1s linear forwards;
 }
 
 /* Sidebar (the white panel) slides off the left*/
 .app-container.leaving .app-sidebar {
-  animation-delay: 0.2s;
-  animation: slide-out 0.8s ease-in forwards;
-
+  animation: slide-out 0.8s ease-in 0.2s forwards;
 }
 
 /* Content slides back to the left edge as the gap closes*/
 .app-container.leaving .app-content {
-  animation-delay: 0.2s;
-  animation: slide-out-content 0.8s ease-in forwards;
+  animation: slide-out-content 0.8s ease-in 0.2s forwards;
 }
 
 /*
 When loggedIn() turns null, Angular adds the slide-out class, waits for
 the animation to finish, and only then removes the element.
 */
-@keyframes slide-in{
-  from { transform: translateX(-100%);}
-  to {  transform: translateX(0);}
+@keyframes slide-in {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
 }
 
-@keyframes push-in{
-  from  { margin-left: 0; }
-  to    { margin-left: 150px; }
+@keyframes push-in {
+  from {
+    margin-left: 0;
+  }
+
+  to {
+    margin-left: 150px;
+  }
 
 }
 
-@keyframes hold{
-  from  { opacity :1;}
-  to  { opacity :1;}
+@keyframes hold {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
-@keyframes slide-out{
-to { transform: translateX(-100%);}
+@keyframes slide-out {
+  to {
+    transform: translateX(-100%);
+  }
 }
 
-@keyframes slide-out-content{
-  to    { margin-left: 0;}
+@keyframes slide-out-content {
+  to {
+    margin-left: 0;
+  }
 }
