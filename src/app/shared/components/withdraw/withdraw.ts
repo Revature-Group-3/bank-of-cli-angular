@@ -7,9 +7,12 @@ import { MatInputModule } from '@angular/material/input';
 import { AuthService } from '../../../services/auth-service';
 import { TransactionService } from '../../../services/transaction-service';
 import { CentsIntegerToDollarStringPipe } from '../../pipes/cents-integer-to-dollar-string-pipe';
+import { NumericInputDirective } from '../../directives/numeric-input-directive';
+
 
 @Component({
   imports: [
+    NumericInputDirective,
     FormsModule,
     MatButtonModule,
     MatDialogModule,
@@ -31,11 +34,11 @@ export class Withdraw {
   currentBalance = computed(() => this.auth.currentUser()?.balance ?? 0);
 
   // what the user types, in dollars (for example 19.99)
-  withdrawalAmount = 0;
+  withdrawalAmount: number | null = null;
 
   // the typed amount as whole cents (19.99 becomes 1999), which is what the service expects
   get withdrawalCents(): number {
-    return Math.round(this.withdrawalAmount * 100);
+    return Math.round((this.withdrawalAmount ?? 0) * 100);
   }
 
   // the service's error message, shown under the input when a withdrawal is rejected

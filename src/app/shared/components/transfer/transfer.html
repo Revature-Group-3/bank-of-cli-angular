@@ -9,28 +9,17 @@
   <mat-form-field appearance="outline">
     <mat-label>Transfer Amount</mat-label>
     <!--Ensure the input is a positive number of at least 1 cent-->
-    <input
-      matInput
-      type="number"
-      min="0.01"
-      step="0.01"
-      [(ngModel)]="transferAmount"
-    >
+    <input matInput placeholder="0" min="0.01" [(ngModel)]="transferAmount" appNumericInput [decimals]="2"
+      inputmode="decimal"> <span matTextPrefix>$&nbsp;</span>
   </mat-form-field>
 
   <mat-form-field appearance="outline">
-    <mat-label>Recipient</mat-label>
-    <input
-      matInput
-      type="text"
-      maxLength="30"
-      minlength="5"
-      [(ngModel)]="recipient"
-    >
+    <mat-label>Recipient Username</mat-label>
+    <input matInput type="text" maxLength="30" minlength="5" [(ngModel)]="recipient">
   </mat-form-field>
 
   @if (errorMessage()) {
-    <p class="error">{{ errorMessage() }}</p>
+  <p class="error">{{ errorMessage() }}</p>
   }
 
 </mat-dialog-content>
@@ -41,9 +30,7 @@
   </button>
 
   <!--Disables the withdraw button if the transferAmount surpasses the currentBalance-->
-  <button
-    mat-raised-button
-    [disabled]="transferCents <= 0 || transferCents > currentBalance()"
+  <button mat-raised-button [disabled]="transferCents <= 0 || transferCents > currentBalance()"
     (click)="submitTransfer()">
     Transfer
   </button>

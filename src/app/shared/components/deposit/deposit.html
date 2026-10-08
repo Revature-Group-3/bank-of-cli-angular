@@ -9,17 +9,13 @@
   <mat-form-field appearance="outline">
     <mat-label>Deposit Amount</mat-label>
     <!--Ensure the input is a positive number of at least 1 cent-->
-    <input
-      matInput
-      type="number"
-      min="0.01"
-      step="0.01"
-      [(ngModel)]="depositAmount"
-    >
+    <input matInput placeholder="0" min="0.01" [(ngModel)]="depositAmount" appNumericInput [decimals]="2"
+      inputmode="decimal">
+    <span matTextPrefix>$&nbsp;</span>
   </mat-form-field>
 
   @if (errorMessage()) {
-    <p class="error">{{ errorMessage() }}</p>
+  <p class="error">{{ errorMessage() }}</p>
   }
 
 </mat-dialog-content>
