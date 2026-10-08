@@ -1,50 +1,81 @@
-<!-- For now it only displays the word deposit and account balance but in the future if we have more accounts we can display a account drop down list. -->
+
 <h2 mat-dialog-title>Transfer</h2>
 
 <mat-dialog-content>
 
+  <!-- Display the current balance. -->
   <p>Current Balance</p>
   <h3>${{ currentBalance().toFixed(2) }}</h3>
 
+  <!-- Enter the transfer amount. -->
   <mat-form-field appearance="outline">
     <mat-label>Transfer Amount</mat-label>
-    <!--Ensure the input is a positive number of at least 1 cent-->
+
     <input
       matInput
       type="number"
       min="0.01"
       step="0.01"
       [(ngModel)]="transferAmount"
+      [disabled]="isLoading() || !!successMessage()"
     >
   </mat-form-field>
 
+  <!-- Enter the recipient's username. -->
   <mat-form-field appearance="outline">
     <mat-label>Recipient</mat-label>
+
     <input
       matInput
       type="text"
-      maxLength="30"
+      maxlength="30"
       minlength="5"
       [(ngModel)]="recipient"
+      [disabled]="isLoading() || !!successMessage()"
     >
   </mat-form-field>
 
+  <!-- Show the existing progress bar while processing. -->
+  <app-progress-bar [showProgress]="isLoading()" />
+
+  <!-- Display a message during processing. -->
+  @if (isLoading()) {
+    <p>Processing transfer...</p>
+  }
+
+  <!-- Display any error returned by the service. -->
   @if (errorMessage()) {
     <p class="error">{{ errorMessage() }}</p>
+  }
+
+  <!-- Confirm a successful transfer. -->
+  @if (successMessage()) {
+    <p>{{ successMessage() }}</p>
   }
 
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close>
+
+  <!-- Prevent cancellation during processing. -->
+  <button
+    mat-button
+    mat-dialog-close
+    [disabled]="isLoading() || !!successMessage()">
     Cancel
   </button>
 
-  <!--Disables the withdraw button if the transferAmount surpasses the currentBalance-->
+  <!-- Prevent invalid or duplicate transfers. -->
   <button
     mat-raised-button
-    [disabled]="transferAmount <= 0 || transferAmount > currentBalance()"
+    [disabled]="
+      transferAmount <= 0 ||
+      transferAmount > currentBalance() ||
+      isLoading() ||
+      !!successMessage()
+    "
     (click)="submitTransfer()">
-    Transfer
+    {{ isLoading() ? 'Processing...' : 'Transfer' }}
   </button>
+
 </mat-dialog-actions>

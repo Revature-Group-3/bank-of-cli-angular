@@ -1,41 +1,67 @@
-<!-- For now it only displays the word deposit and account balance but in the future if we have more accounts we can display a account drop down list. -->
+
 <h2 mat-dialog-title>Withdraw</h2>
 
 <mat-dialog-content>
 
+  <!-- Display the current account balance. -->
   <p>Current Balance</p>
   <h3>${{ currentBalance().toFixed(2) }}</h3>
 
+  <!-- Enter a withdrawal amount. -->
   <mat-form-field appearance="outline">
     <mat-label>Withdraw Amount</mat-label>
-    <!--Ensure the input is a positive number of at least 1 cent-->
+
     <input
       matInput
       type="number"
       min="0.01"
       step="0.01"
       [(ngModel)]="withdrawalAmount"
+      [disabled]="isLoading() || !!successMessage()"
     >
-
   </mat-form-field>
 
+  <!-- Reuse the team's existing progress bar. -->
+  <app-progress-bar [showProgress]="isLoading()" />
+
+  <!-- Show a message while processing. -->
+  @if (isLoading()) {
+    <p>Processing withdrawal...</p>
+  }
+
+  <!-- Show the error if the withdrawal is rejected. -->
   @if (errorMessage()) {
     <p class="error">{{ errorMessage() }}</p>
   }
 
+  <!-- Show confirmation after success. -->
+  @if (successMessage()) {
+    <p>{{ successMessage() }}</p>
+  }
 
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close>
+
+  <!-- Do not allow cancellation during processing. -->
+  <button
+    mat-button
+    mat-dialog-close
+    [disabled]="isLoading() || !!successMessage()">
     Cancel
   </button>
 
-  <!--Disables the withdraw button if the withdrawalAmount surpasses the currentBalance-->
+  <!-- Prevent invalid and duplicate withdrawals. -->
   <button
     mat-raised-button
-    [disabled]="withdrawalAmount <= 0 || withdrawalAmount > currentBalance()"
+    [disabled]="
+      withdrawalAmount <= 0 ||
+      withdrawalAmount > currentBalance() ||
+      isLoading() ||
+      !!successMessage()
+    "
     (click)="submitWithdrawal()">
-    Withdraw
+    {{ isLoading() ? 'Processing...' : 'Withdraw' }}
   </button>
+
 </mat-dialog-actions>
