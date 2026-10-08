@@ -13,7 +13,7 @@ import { TransactionTable } from '../../shared/transaction-table/transaction-tab
 
 // User-facing dashboard
 @Component({
-  imports: [RouterLink, CentsIntegerToDollarStringPipe, MatCardModule, TransactionTable],
+  imports: [CentsIntegerToDollarStringPipe, MatCardModule, TransactionTable],
   selector: 'app-dashboard',
   styleUrl: './dashboard.css',
   templateUrl: './dashboard.html',
