@@ -39,7 +39,13 @@ export class Register {
       console.log('Form not filled.');
       return;
     }
+
+    // Confirm Password with confirm password
     const form = this.RegisterForm.value;
+    if (form.password !== form.confirmPassword){
+      this.message.set('Password do not match.');
+      return;
+    }
 
     const created = this.authService.register({
 
