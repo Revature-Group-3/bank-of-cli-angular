@@ -3,6 +3,7 @@ import { Component, computed, inject } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { AuthService } from '../../services/auth-service';
 import { TransactionService } from '../../services/transaction-service';
+import { CentsIntegerToDollarStringPipe } from '../pipes/cents-integer-to-dollar-string-pipe';
 
 // what one table row looks like
 interface TransactionRow {
@@ -13,7 +14,7 @@ interface TransactionRow {
 }
 
 @Component({
-  imports: [MatTableModule],
+  imports: [MatTableModule, CentsIntegerToDollarStringPipe],
   selector: 'app-transaction-table',
   styleUrl: './transaction-table.css',
   templateUrl: './transaction-table.html',
