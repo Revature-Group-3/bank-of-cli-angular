@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { Validators } from '@angular/forms';
 
 // Reuse the team's existing progress bar component.
 import { ProgressBar } from '../../progress-bar/progress-bar';
@@ -41,8 +42,8 @@ export class Login {
 
   // Existing login form.
   loginForm = new FormGroup({
-    username: new FormControl(''),
-    password: new FormControl('')
+    username: new FormControl('', [Validators.required, Validators.minLength(1)]),
+    password: new FormControl('', [Validators.required, Validators.minLength(1)])
   });
 
   onSubmit() {
@@ -50,6 +51,24 @@ export class Login {
     // Prevent multiple submissions while loading.
     if (this.isLoading()) {
       return;
+    if (this.loginForm.invalid){
+      this.message.set("Please fill in the fields.");
+      console.log("No fields filled. Could not log user in.")
+      return;
+    }
+
+    const form = this.loginForm.value;
+    const loggedIn = this.authService.login(form.username ?? '', form.password ?? '');
+
+    if (loggedIn === null) {
+      this.message.set('Invalid username or password. Please try again.');
+      console.log('Unable to login.');
+    } else {
+      this.message.set('You are logged in! Redirecting to your dashboard...');
+      console.log('Login Successful.');
+      setTimeout(() => {
+        this.router.navigate(['/dashboard']);
+      }, 1000);
     }
 
     // Show the loading bar.

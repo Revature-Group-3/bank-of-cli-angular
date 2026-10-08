@@ -9,6 +9,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
 
+import { Validators } from '@angular/forms';
+
 @Component({
   imports: [ReactiveFormsModule, RouterLink, MatInputModule, MatButtonModule, MatFormFieldModule, MatCardModule, MatIcon],
   selector: 'app-register',
@@ -22,17 +24,32 @@ export class Register {
   message = signal('');
 
   RegisterForm = new FormGroup({
-    firstName: new FormControl(''),
-    lastName: new FormControl(''),
-    username: new FormControl(''),
-    password: new FormControl(''),
-    confirmPassword: new FormControl('')
+    firstName: new FormControl('', [Validators.required, Validators.minLength(1)]),
+    lastName: new FormControl('', [Validators.required, Validators.minLength(1)]),
+    username: new FormControl('', [Validators.required, Validators.minLength(1)]),
+    password: new FormControl('', [Validators.required, Validators.minLength(1)]),
+    confirmPassword: new FormControl('', [Validators.required, Validators.minLength(1)])
   });
 
   onSubmit() {
+
+    // Check if form is not filled, return.
+    if (this.RegisterForm.invalid){
+      this.message.set('Please fill in all fields.');
+      console.log('Form not filled.');
+      return;
+    }
+
+    // Confirm Password with confirm password
     const form = this.RegisterForm.value;
+    if (form.password !== form.confirmPassword){
+      this.message.set('Password do not match.');
+      return;
+    }
 
     const created = this.authService.register({
+
+      // the ?? is just if the firstName is null or defined it gets assigned ''
       firstName: form.firstName ?? '',
       lastName: form.lastName ?? '',
       username: form.username ?? '',
