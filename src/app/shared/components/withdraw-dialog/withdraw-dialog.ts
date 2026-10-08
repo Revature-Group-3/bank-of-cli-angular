@@ -4,8 +4,6 @@ import { DialogBox } from '../../dialog-box/dialog-box';
 import { MatButtonModule } from '@angular/material/button';
 import { LocateAtm } from '../locate-atm/locate-atm';
 import { Withdraw } from '../withdraw/withdraw';
-//remove this later
-import { Transfer } from '../transfer/transfer';
 
 @Component({
   imports: [MatButtonModule],
@@ -26,8 +24,7 @@ export class WithdrawDialog {
         title: 'Withdraw Options',
         options: [
           { label: 'Withdraw', action: 'deposit' },
-          { label: 'Cash Withdrawal', action: 'locateAtm' },
-          { label: 'Temporary Transfer', action: 'transfer' }
+          { label: 'Cash Withdrawal', action: 'locateAtm' }
         ]
       }
     });
@@ -41,10 +38,6 @@ export class WithdrawDialog {
       if (action === 'locateAtm') {
         this.locateAtm();
       }
-
-      if (action === 'transfer') {
-        this.selectTransfer();
-      }
     });
   }
 
@@ -54,9 +47,5 @@ export class WithdrawDialog {
 
   locateAtm() {
     this.dialog.open(LocateAtm, { width: '600px' });
-  }
-
-  selectTransfer() {
-    this.dialog.open(Transfer, { width: '400px' })
   }
 }
