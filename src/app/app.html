@@ -1,12 +1,20 @@
-<!-- App container: split between navbar and main content -->
-<mat-sidenav-container class="app-container">
-    <!-- Left side: sidenav -->
-    <mat-sidenav mode="side" opened class="app-sidebar">
-        <app-navbar></app-navbar>
-    </mat-sidenav>
+<!-- For logged-in viewers -->
+@if(loggedIn() != null) {
+    <!-- App container: split between navbar and main content -->
+    <mat-sidenav-container class="app-container">
+        <!-- Left side: sidenav -->
+        <mat-sidenav mode="side" opened class="app-sidebar">
+            <app-navbar></app-navbar>
+        </mat-sidenav>
 
-    <!-- Right side: main content -->
-    <mat-sidenav-content class="app-content">
-        <router-outlet />
-    </mat-sidenav-content>
-</mat-sidenav-container>
+        <!-- Right side: main content -->
+        <mat-sidenav-content class="app-content">
+            <router-outlet />
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+}
+
+<!-- For logged-out viewers -->
+@else {
+    <router-outlet />
+}
