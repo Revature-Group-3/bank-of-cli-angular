@@ -1,5 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { MatListModule } from '@angular/material/list';
+import { AuthService } from '../../services/auth-service';
+import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+
+import { DepositDialog } from '../components/deposit-dialog/deposit-dialog';
+import { WithdrawDialog } from '../components/withdraw-dialog/withdraw-dialog';
+import { Transfer } from '../components/transfer/transfer';
 
 @Component({
   selector: 'app-navbar',
@@ -7,4 +14,38 @@ import { MatListModule } from '@angular/material/list';
   styleUrl: 'navbar.css',
   imports: [MatListModule],
 })
-export class Navbar {}
+
+export class Navbar {
+
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  message = signal('');
+
+  onSignOut() {
+
+    // 1. log the user out through the service
+    this.authService.logout();
+    this.message.set('Account user signing out...');
+    console.log('Signing out...');
+    // 2. navigate to the login page('/')
+    setTimeout(() => {
+      this.router.navigate(['/']);
+    }, 1000);
+  }
+
+  constructor(private dialog: MatDialog) { }
+
+  openDeposit() {
+    const dialogComponent = new DepositDialog(this.dialog);
+    dialogComponent.openDepositDialog();
+  }
+
+  openWithdraw() {
+    const dialogComponent = new WithdrawDialog(this.dialog);
+    dialogComponent.openWithdrawDialog();
+  }
+
+  openTransfer() {
+    this.dialog.open(Transfer, { width: '400px' });
+  }
+}

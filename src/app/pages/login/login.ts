@@ -96,7 +96,7 @@ export class Login {
         // Preserve the team's existing redirect delay.
         setTimeout(() => {
           this.router.navigate(['/dashboard']);
-        }, 2000);
+        }, 1000);
       }
 
     }, 1000);
