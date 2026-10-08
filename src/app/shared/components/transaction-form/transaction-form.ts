@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 // import { NumericInputDirective } from './numeric-input.directive';
 
 // Business rule: the amount must be greater than zero
@@ -41,6 +42,7 @@ export function isTransactionType(value: unknown): value is TransactionType {
     MatInputModule,
     MatSelectModule,
     MatButtonModule,
+    MatIconModule,
     //NumericInputDirective,
   ],
   templateUrl: './transaction-form.html',
