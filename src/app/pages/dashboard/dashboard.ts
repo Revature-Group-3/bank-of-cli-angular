@@ -1,4 +1,4 @@
-import { Component, computed, inject} from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { AuthService } from '../../services/auth-service';
 
 // RouterLink is for any links that might need to be added to the dashboard
@@ -13,19 +13,19 @@ import { TransactionTable } from '../../shared/transaction-table/transaction-tab
 
 // User-facing dashboard
 @Component({
-  imports: [RouterLink, CentsIntegerToDollarStringPipe, MatCardModule, TransactionTable],
+  imports: [CentsIntegerToDollarStringPipe, MatCardModule, TransactionTable],
   selector: 'app-dashboard',
   styleUrl: './dashboard.css',
   templateUrl: './dashboard.html',
 })
 export class Dashboard {
 
-/**
- * The logged-in account is stored in AuthService.currentUser when login
- * succeeds. AuthService is a shared singleton, so that state survives the
- * page change from login to dashboard. The dashboard reads currentUser()
- * to get the name and balance; it's null if nobody is logged in.
- */
+  /**
+   * The logged-in account is stored in AuthService.currentUser when login
+   * succeeds. AuthService is a shared singleton, so that state survives the
+   * page change from login to dashboard. The dashboard reads currentUser()
+   * to get the name and balance; it's null if nobody is logged in.
+   */
 
   // inject service class
   private authService = inject(AuthService);

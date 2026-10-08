@@ -1,18 +1,49 @@
+:host {
+  display: block;
+  height: 100%;
+
+  background: linear-gradient(
+    to bottom,
+    #0056b3,
+    #0a2540
+  );
+}
+
 .navbar {
   display: flex;
   flex-direction: column;
+
+  width: 100%;
   height: 100%;
+
   padding: 16px 0;
+
   box-sizing: border-box;
+
+  background: transparent;
+
+  border: none;
+  border-radius: 0;
+  outline: none;
+  box-shadow: none;
+
+  --mat-list-list-item-label-text-color: white;
+  --mat-list-list-item-hover-label-text-color: white;
 }
 
 .brand {
+  color: white;
+
   font-weight: bold;
   font-size: 1.2rem;
-  padding: 8px 16px 24px 16px;
-  text-align: left;
+
+  padding: 8px 16px 24px;
 }
 
 .spacer {
   flex-grow: 1;
+}
+
+.mat-drawer-side {
+  border-color: none;
 }

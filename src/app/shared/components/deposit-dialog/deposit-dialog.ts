@@ -14,7 +14,7 @@ import { Deposit } from '../deposit/deposit';
 })
 export class DepositDialog {
 
-  constructor(private dialog: MatDialog) {}
+  constructor(private dialog: MatDialog) { }
 
   openDepositDialog() {
 
@@ -25,7 +25,6 @@ export class DepositDialog {
         options: [
           { label: 'Deposit', action: 'deposit' },
           { label: 'Cash Deposit', action: 'locateATM' }
-          //,{ label: 'Check Deposit', action: 'checkDeposit' },{ label: 'Setup Direct Deposit', action: 'directDeposit' }
         ]
       }
     });
@@ -39,31 +38,14 @@ export class DepositDialog {
       if (action === 'locateATM') {
         this.locateATM();
       }
-
-      // if (action === 'checkDeposit') {
-      //   this.selectCheckDeposit();
-      // }
-
-      // if (action === 'directDeposit') {
-      //   this.selectDirectDeposit();
-      // }
-
     });
   }
 
   selectDeposit() {
-    this.dialog.open(Deposit, { width:'400px' })
+    this.dialog.open(Deposit, { width: '400px' })
   }
 
   locateATM() {
     this.dialog.open(LocateAtm, { width: '600px' });
   }
-
-  // selectCheckDeposit() {
-  //   console.log('Opening check deposit');
-  // }
-
-  // selectDirectDeposit() {
-  //   console.log('Opening direct deposit');
-  // }
 }

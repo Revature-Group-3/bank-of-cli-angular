@@ -24,3 +24,8 @@ body {
       var(--dark-blue)
     );
   }
+
+  .mat-drawer-side {
+    border-right: none !important;
+    border-radius: 0 !important;
+  }
