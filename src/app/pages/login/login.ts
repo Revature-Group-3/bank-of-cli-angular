@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -30,11 +31,18 @@ export class Login {
   message = signal('');
 
   loginForm = new FormGroup({
-    username: new FormControl(''),
-    password: new FormControl('')
+    username: new FormControl('', [Validators.required, Validators.minLength(1)]),
+    password: new FormControl('', [Validators.required, Validators.minLength(1)])
   });
 
   onSubmit() {
+
+    if (this.loginForm.invalid){
+      this.message.set("Please fill in the fields.");
+      console.log("No fields filled. Could not log user in.")
+      return;
+    }
+
     const form = this.loginForm.value;
     const loggedIn = this.authService.login(form.username ?? '', form.password ?? '');
 
