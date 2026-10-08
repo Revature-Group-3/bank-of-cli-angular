@@ -1,5 +1,5 @@
-<!-- For logged-in viewers -->
-@if(loggedIn() != null) {
+<!-- For logged-in PC viewers -->
+@if(loggedIn() != null && !isMobile()) {
     <!-- App container: split between navbar and main content -->
 
      <!-- animate.leave only reliably fires on the element the @if
@@ -20,6 +20,12 @@
             <router-outlet />
         </mat-sidenav-content>
     </mat-sidenav-container>
+}
+
+<!-- For logged-in mobile viewers -->
+@else if (loggedIn() != null) {
+    <router-outlet />
+    <app-mobile-navbar></app-mobile-navbar>
 }
 
 <!-- For logged-out viewers -->

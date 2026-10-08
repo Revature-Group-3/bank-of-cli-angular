@@ -1,0 +1,10 @@
+<!-- Mobile navbar component -->
+<mat-toolbar class="mobile-navbar">
+  <!-- Transaction buttons -->
+  <button mat-button (click)="openDeposit()">Deposit</button>
+  <button mat-button (click)="openWithdraw()">Withdraw</button>
+  <button mat-button (click)="openTransfer()">Transfer</button>
+  
+  <!-- Signout button -->
+  <button class="sign-out" mat-button (click)="onSignOut()">Sign Out</button>
+</mat-toolbar>
