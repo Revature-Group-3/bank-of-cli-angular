@@ -10,5 +10,8 @@
   <span class="spacer"></span>
 
   <!-- Signout button -->
-  <button mat-list-item /*(click)=""*/>Sign Out</button>
+   @if( loggedIn() != null){
+    <button mat-list-item /*(click)=""*/>Sign Out</button>
+   }
+
 </mat-action-list>
