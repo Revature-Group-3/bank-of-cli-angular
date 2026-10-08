@@ -18,4 +18,8 @@ describe('TransactionTable', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should start with no transactions', () => {
+    expect(component.dataSource).toEqual([]);
+  });
 });
