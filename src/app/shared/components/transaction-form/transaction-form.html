@@ -1,0 +1,43 @@
+<mat-card class="transaction-form-card">
+    <mat-card-header>
+        <mat-card-title>Create Transaction</mat-card-title>
+        <mat-card-subtitle>Enter transaction details</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+        <!-- Type selector: not form data, so it lives outside the form and just navigates -->
+        <mat-form-field>
+            <mat-label>Transaction Type</mat-label>
+            <mat-select [value]="currentType()" (selectionChange)="changeType($event.value)">
+                <mat-option value="deposit">Deposit</mat-option>
+                <mat-option value="withdrawal">Withdrawal</mat-option>
+                <mat-option value="transfer">Transfer</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <form [formGroup]="form" (ngSubmit)="submit()">
+            @if (config().showTo) {
+            <mat-form-field>
+                <mat-label>To</mat-label>
+                <input matInput type="text" inputmode="numeric" appNumericInput formControlName="to"
+                    class="to-account-field" />
+                <mat-error>Account number is required</mat-error>
+            </mat-form-field>
+            }
+
+            <mat-form-field>
+                <mat-label>Amount</mat-label>
+                <span matTextPrefix>$&nbsp;</span>
+                <input matInput type="text" inputmode="decimal" //appNumericInput [decimals]="2"
+                    formControlName="amount" />
+                @if (form.controls.amount.hasError('required')) {
+                <mat-error>Amount is required</mat-error>
+                } @else if (form.controls.amount.hasError('positive')) {
+                <mat-error>Amount must be greater than zero</mat-error>
+                }
+            </mat-form-field>
+
+            <button mat-flat-button type="submit">Submit</button>
+        </form>
+    </mat-card-content>
+</mat-card>
