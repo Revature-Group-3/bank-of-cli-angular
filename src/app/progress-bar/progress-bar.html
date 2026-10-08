@@ -1,7 +1,6 @@
 <!-- 
-If show = true, component is is rendered
-If show = false, component is not rendered 
+If progressValue = true, component is is rendered
+If progressValue = false, component is not rendered 
 -->
-@if (showProgress()) {
+
 <mat-progress-bar [mode]="progressMode()" [value]="progressValue()" />
-}

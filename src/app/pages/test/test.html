@@ -1,0 +1,13 @@
+<p>test works!</p>
+<!-- Example template for indeterminate bar -->
+<button (click)="submitI()">Submit</button>
+@if (isLoading()) {
+    <app-progress-bar [showProgress]="isLoading()" />
+}
+
+
+<!-- Example template for determinate bar -->
+<!-- <button (click)="submitD()">Submit</button>
+@if (isLoading()) {
+    <app-progress-bar [showProgress]="isLoading()" progressMode="determinate" [progressValue]="progressValue()" />
+} -->
