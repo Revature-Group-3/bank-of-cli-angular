@@ -1,5 +1,5 @@
-import { CurrencyPipe } from '@angular/common';
 import { Component, computed, inject } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { AuthService } from '../../services/auth-service';
 import { TransactionService } from '../../services/transaction-service';
@@ -14,7 +14,7 @@ interface TransactionRow {
 }
 
 @Component({
-  imports: [MatTableModule, CentsIntegerToDollarStringPipe],
+  imports: [MatTableModule, CentsIntegerToDollarStringPipe, DatePipe],
   selector: 'app-transaction-table',
   styleUrl: './transaction-table.css',
   templateUrl: './transaction-table.html',
