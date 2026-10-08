@@ -4,7 +4,7 @@
 <mat-dialog-content>
 
   <p>Current Balance</p>
-  <h3>${{ currentBalance.toFixed(2) }}</h3>
+  <h3>${{ currentBalance().toFixed(2) }}</h3>
 
   <mat-form-field appearance="outline">
     <mat-label>Transfer Amount</mat-label>
@@ -29,6 +29,9 @@
     >
   </mat-form-field>
 
+  @if (errorMessage()) {
+    <p class="error">{{ errorMessage() }}</p>
+  }
 
 </mat-dialog-content>
 
@@ -40,7 +43,7 @@
   <!--Disables the withdraw button if the transferAmount surpasses the currentBalance-->
   <button
     mat-raised-button
-    [disabled]="transferAmount <= 0 || transferAmount > currentBalance"
+    [disabled]="transferAmount <= 0 || transferAmount > currentBalance()"
     (click)="submitTransfer()">
     Transfer
   </button>
