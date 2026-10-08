@@ -12,11 +12,11 @@
   is created fresh by the @if, already in its final position, so there's nothing to transition between.
   So we can't use transitionX() nor transform. Instead we can use an animation with @keyframes.
   */
-  animation: slide-in 1s cubic-bezier(0.25, 1, 0.5, 1) 1s;
+  animation: slide-in 1s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .app-content{
-  animation : push-in 1s cubic-bezier(0.25, 1, 0.5, 1) 1s;
+  animation : push-in 1s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 /*Container holds for 0.4s so Angular waits before removing it*/

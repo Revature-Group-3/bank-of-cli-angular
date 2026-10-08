@@ -44,7 +44,6 @@ export class Login {
     }
 
     const form = this.loginForm.value;
-
     // Check username and password not be blank
     // ? in form.username?.trim() just means
     // that If the username is missing, or turns
@@ -52,12 +51,13 @@ export class Login {
     if (!form.username?.trim()){
       this.message.set('Username cannot be blank.')
       console.log('Username is blank.');
+      return;
     }
 
     if (!form.password?.trim()){
       this.message.set('Password cannot be blank');
       console.log('Password is blank');
-
+      return;
     }
     const loggedIn = this.authService.login(form.username ?? '', form.password ?? '');
 
@@ -67,9 +67,7 @@ export class Login {
     } else {
       this.message.set('You are logged in! Redirecting to your dashboard...');
       console.log('Login Successful.');
-      setTimeout(() => {
-        this.router.navigate(['/dashboard']);
-      }, 100);
+      this.router.navigate(['/dashboard']);
     }
   }
 }
