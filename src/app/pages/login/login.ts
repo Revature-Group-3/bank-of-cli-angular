@@ -10,6 +10,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { Validators } from '@angular/forms';
 
+import { ProgressBar } from '../../progress-bar/progress-bar';
+
 @Component({
   selector: 'app-login',
   imports: [
@@ -19,7 +21,8 @@ import { Validators } from '@angular/forms';
     MatButtonModule,
     RouterLink,
     MatIconModule,
-    MatCardModule
+    MatCardModule,
+    ProgressBar
   ],
   templateUrl: './login.html',
   styleUrl: './login.css'
@@ -30,6 +33,10 @@ export class Login {
 
   message = signal('');
 
+  isLoading = signal(false);
+
+  loginSucceeded = signal(false);
+
   loginForm = new FormGroup({
     username: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required])
@@ -37,37 +44,70 @@ export class Login {
 
   onSubmit() {
 
-    if (this.loginForm.invalid){
-      this.message.set("Please fill in the fields.");
-      console.log("No fields filled. Could not log user in.")
+    // Prevent duplicate submissions.
+    if (this.isLoading() || this.loginSucceeded()) {
+      return;
+    }
+
+    // Preserve the team's required-field validation.
+    if (this.loginForm.invalid) {
+      this.message.set('Please fill in the fields.');
       return;
     }
 
     const form = this.loginForm.value;
-    // Check username and password not be blank
-    // ? in form.username?.trim() just means
-    // that If the username is missing, or turns
-    // empty once you strip the spaces, show the message and stop."
-    if (!form.username?.trim()){
-      this.message.set('Username cannot be blank.')
-      console.log('Username is blank.');
+
+    // Preserve the team's blank username validation.
+    if (!form.username?.trim()) {
+      this.message.set('Username cannot be blank.');
       return;
     }
 
-    if (!form.password?.trim()){
-      this.message.set('Password cannot be blank');
-      console.log('Password is blank');
+    // Preserve the team's blank password validation.
+    if (!form.password?.trim()) {
+      this.message.set('Password cannot be blank.');
       return;
     }
-    const loggedIn = this.authService.login(form.username ?? '', form.password ?? '');
 
-    if (loggedIn === null) {
-      this.message.set('Invalid username or password. Please try again.');
-      console.log('Unable to login.');
-    } else {
-      this.message.set('You are logged in! Redirecting to your dashboard...');
-      console.log('Login Successful.');
-      this.router.navigate(['/dashboard']);
-    }
+    // Start loading after the inputs pass validation.
+    this.isLoading.set(true);
+    this.message.set('');
+
+    // Temporary delay because authentication uses mock data.
+    // Replace with the HTTP request's loading state later.
+    setTimeout(() => {
+
+      // Use the team's existing authentication service.
+      const loggedIn = this.authService.login(
+        form.username ?? '',
+        form.password ?? ''
+      );
+
+      // Authentication is finished.
+      this.isLoading.set(false);
+
+      if (loggedIn === null) {
+
+        // Show the existing login error.
+        this.message.set(
+          'Invalid username or password. Please try again.'
+        );
+
+      } else {
+
+        // Show the success message before redirecting.
+        this.loginSucceeded.set(true);
+
+        this.message.set(
+          'You are logged in! Redirecting to your dashboard...'
+        );
+
+        // Give the user time to see the confirmation.
+        setTimeout(() => {
+          this.router.navigate(['/dashboard']);
+        }, 1000);
+      }
+
+    }, 1000);
   }
 }

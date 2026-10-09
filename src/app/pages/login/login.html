@@ -1,62 +1,56 @@
 <div class="login-page">
 
-    <h1 class="page-title">Bank of CLI</h1>
-    <mat-icon class="bank-icon">account_balance</mat-icon>
-    <mat-card class="login-card">
+  <h1 class="page-title">Bank of CLI</h1>
+  <mat-icon class="bank-icon">account_balance</mat-icon>
+  <mat-card class="login-card">
 
-      <mat-card-content>
+    <mat-card-content>
 
-        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Username</mat-label>
-            <mat-icon matPrefix>person</mat-icon>
-            <input
-              matInput
-              type="text"
-              formControlName="username"
-              placeholder="Enter your username"
-            >
-          </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Username</mat-label>
+          <mat-icon matPrefix>person</mat-icon>
+          <input matInput type="text" formControlName="username" placeholder="Enter your username"
+            [disabled]="isLoading() || loginSucceeded()">
+        </mat-form-field>
 
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Password</mat-label>
-            <mat-icon matPrefix>lock</mat-icon>
-            <input
-              matInput
-              type="password"
-              formControlName="password"
-              placeholder="Enter your password"
-            >
-          </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Password</mat-label>
+          <mat-icon matPrefix>lock</mat-icon>
+          <input matInput type="password" formControlName="password" placeholder="Enter your password"
+            [disabled]="isLoading() || loginSucceeded()">
+        </mat-form-field>
 
-          <button
-            mat-flat-button
-            type="submit"
-            class="sign-in-button"
-          >
-            Sign In
-          </button>
+        <button mat-flat-button type="submit" class="sign-in-button" [disabled]="isLoading() || loginSucceeded()">
+          {{ isLoading() ? 'Signing In...' : 'Sign In' }}
+        </button>
 
-          @if (message()) {
-            <p>{{ message() }}</p>
-          }
+        <!-- Display Boone's progress bar only while logging in. -->
+        @if (isLoading()) {
+        <app-progress-bar [showProgress]="isLoading()" />
+        }
 
-          <div class="divider">
-            <span></span>
-            <p>OR</p>
-            <span></span>
-          </div>
+        <!-- Display login success or error messages. -->
+        @if (message()) {
+        <p>{{ message() }}</p>
+        }
 
-          <p class="create-account">
-            Don't have an account?
-            <a routerLink="/register">Create Account</a>
-          </p>
+        <div class="divider">
+          <span></span>
+          <p>OR</p>
+          <span></span>
+        </div>
 
-        </form>
+        <p class="create-account">
+          Don't have an account?
+          <a routerLink="/register">Create Account</a>
+        </p>
 
-      </mat-card-content>
+      </form>
 
-    </mat-card>
+    </mat-card-content>
+
+  </mat-card>
 
 </div>
