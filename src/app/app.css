@@ -1,6 +1,6 @@
 .app-container {
-  height: 100vh;
-  width: 100vw;
+  height: 100dvh;
+  width: 100%;
   background: transparent;
 }
 
@@ -16,6 +16,8 @@
 }
 
 .app-content {
+  height: 100%;
+  overflow: hidden;
   animation: push-in 1s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
@@ -36,8 +38,9 @@
 }
 
 .mobile-content {
-  padding-bottom: calc(56px + env(safe-area-inset-bottom));
+  height: calc(100dvh - 56px - env(safe-area-inset-bottom));
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 /*

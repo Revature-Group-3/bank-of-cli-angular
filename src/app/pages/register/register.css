@@ -3,7 +3,7 @@
    ========================= */
 
    .register-page {
-    min-height: 100vh;
+    height: 100%;
     width: 100%;
 
     display: flex;
@@ -13,6 +13,7 @@
     padding: 2rem 1rem 3rem;
 
     box-sizing: border-box;
+    overflow: hidden;
 
     background: linear-gradient(
         to right,
@@ -242,5 +243,32 @@ input[matInput]:focus::placeholder {
 
     .register-header h2 {
         font-size: 1.5rem;
+    }
+}
+
+@media (max-height: 700px) {
+    .register-page {
+        padding-block: 0.5rem;
+    }
+
+    .brand-title {
+        margin: 0.25rem 0 0.5rem;
+        font-size: 1.75rem;
+    }
+
+    .register-card {
+        padding: 1rem;
+    }
+
+    .register-header {
+        margin-bottom: 0.75rem;
+    }
+
+    form {
+        gap: 0.35rem;
+    }
+
+    .login-link {
+        margin-top: 0.5rem;
     }
 }

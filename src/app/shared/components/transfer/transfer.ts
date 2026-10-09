@@ -12,6 +12,8 @@ import { CentsIntegerToDollarStringPipe } from '../../pipes/cents-integer-to-dol
 import { NumericInputDirective } from '../../directives/numeric-input-directive';
 import { ProgressBar } from '../../../progress-bar/progress-bar';
 
+import { ToastService } from '../../../services/toast.service';
+
 @Component({
   selector: 'app-transfer',
   imports: [
@@ -34,6 +36,7 @@ export class Transfer {
   private auth = inject(AuthService);
   private transactions = inject(TransactionService);
   private dialogRef = inject(MatDialogRef);
+  private toast = inject(ToastService);
 
   // The current account balance is stored in cents.
   currentBalance = computed(() => this.auth.currentUser()?.balance ?? 0);
@@ -49,15 +52,14 @@ export class Transfer {
   // Store the recipient's username.
   recipient = '';
 
-  // Track loading, errors, and success messages.
+  // Track loading and errors.
   isLoading = signal(false);
   errorMessage = signal('');
-  successMessage = signal('');
 
   submitTransfer() {
 
     // Prevent duplicate submissions.
-    if (this.isLoading() || this.successMessage()) {
+    if (this.isLoading()) {
       return;
     }
 
@@ -69,7 +71,6 @@ export class Transfer {
     // Start loading and clear previous feedback.
     this.isLoading.set(true);
     this.errorMessage.set('');
-    this.successMessage.set('');
 
     // Prevent closing the dialog while processing.
     this.dialogRef.disableClose = true;
@@ -105,16 +106,11 @@ export class Transfer {
         return;
       }
 
-      // Confirm a successful transfer.
-      this.successMessage.set('Transfer successful!');
+      // Toast Notification
+      this.toast.show("Transfer Successful.");
 
-      // Keep the confirmation visible for one second.
-      setTimeout(() => {
-
-        // Close the dialog with the original transaction result.
-        this.dialogRef.close(result);
-
-      }, 1000);
+      // Close the dialog with the original transaction result.
+      this.dialogRef.close(result);
 
     }, 1000);
   }

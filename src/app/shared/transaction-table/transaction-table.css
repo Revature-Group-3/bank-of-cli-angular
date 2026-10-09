@@ -3,9 +3,17 @@
   src: url('./Inter-VariableFont_opsz,wght.ttf');
 }
 
+:host {
+  display: block;
+  height: 100%;
+  min-height: 0;
+}
+
 .table-position {
   display: flex;
   flex-direction: column;
+  height: 100%;
+  min-height: 0;
   border: 2px solid blue;
   border-radius: 15px;
   overflow: hidden;
@@ -14,8 +22,8 @@
 }
 
 .table-rows {
-  min-height: 173px;
-  flex: 0 0 auto;
+  min-height: 0;
+  flex: 1 1 auto;
   overflow-y: auto;
 }
 
@@ -57,9 +65,9 @@ table .first-column {
   }
 
   .table-rows {
-  min-height: 350px;
+  min-height: 0;
   width: 100%;
-  flex: 0 0 auto;
+  flex: 1 1 auto;
   overflow-y: auto;
 }
 

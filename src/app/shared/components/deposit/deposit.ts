@@ -13,6 +13,8 @@ import { CentsIntegerToDollarStringPipe } from '../../pipes/cents-integer-to-dol
 import { NumericInputDirective } from '../../directives/numeric-input-directive';
 import { ProgressBar } from '../../../progress-bar/progress-bar';
 
+import { ToastService } from '../../../services/toast.service';
+
 @Component({
   selector: 'app-deposit',
   imports: [
@@ -36,6 +38,7 @@ export class Deposit {
   private transactions = inject(TransactionService);
   private dialogRef = inject(MatDialogRef);
   private router = inject(Router);
+  private toast = inject(ToastService);
 
   // The account balance is stored in whole cents.
   currentBalance = computed(() => this.auth.currentUser()?.balance ?? 0);
@@ -51,12 +54,11 @@ export class Deposit {
   // Track loading, error, and success messages.
   isLoading = signal(false);
   errorMessage = signal('');
-  successMessage = signal('');
 
   submitDeposit() {
 
     // Prevent duplicate submissions.
-    if (this.isLoading() || this.successMessage()) {
+    if (this.isLoading()) {
       return;
     }
 
@@ -67,7 +69,6 @@ export class Deposit {
     // Start loading and clear previous messages.
     this.isLoading.set(true);
     this.errorMessage.set('');
-    this.successMessage.set('');
 
     // Prevent closing the dialog during processing.
     this.dialogRef.disableClose = true;
@@ -92,19 +93,14 @@ export class Deposit {
         return;
       }
 
-      // Confirm the successful deposit.
-      this.successMessage.set('Deposit successful!');
+      // Toast Notification
+      this.toast.show("Deposit Successful.");
 
-      // Display the confirmation before closing.
-      setTimeout(() => {
+      // Close the dialog and return the original transaction result.
+      this.dialogRef.close(result);
 
-        // Return the original transaction result.
-        this.dialogRef.close(result);
-
-        // Return to the dashboard.
-        this.router.navigate(['/dashboard']);
-
-      }, 1000);
+      // Return to the dashboard.
+      this.router.navigate(['/dashboard']);
 
     }, 1000);
   }

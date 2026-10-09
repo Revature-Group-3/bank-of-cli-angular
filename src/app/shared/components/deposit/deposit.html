@@ -20,7 +20,7 @@
       appNumericInput
       [decimals]="2"
       inputmode="decimal"
-      [disabled]="isLoading() || !!successMessage()"
+      [disabled]="isLoading()"
     >
 
     <span matTextPrefix>$&nbsp;</span>
@@ -37,11 +37,6 @@
     <p class="error">{{ errorMessage() }}</p>
   }
 
-  <!-- Display success confirmation. -->
-  @if (successMessage()) {
-    <p>{{ successMessage() }}</p>
-  }
-
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
@@ -49,13 +44,13 @@
   <button
     mat-button
     mat-dialog-close
-    [disabled]="isLoading() || !!successMessage()">
+    [disabled]="isLoading()">
     Cancel
   </button>
 
   <button
     mat-raised-button
-    [disabled]="depositCents <= 0 || isLoading() || !!successMessage()"
+    [disabled]="depositCents <= 0 || isLoading()"
     (click)="submitDeposit()">
     {{ isLoading() ? 'Processing...' : 'Deposit' }}
   </button>

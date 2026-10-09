@@ -20,7 +20,7 @@
       appNumericInput
       [decimals]="2"
       inputmode="decimal"
-      [disabled]="isLoading() || !!successMessage()"
+      [disabled]="isLoading()"
     >
 
     <span matTextPrefix>$&nbsp;</span>
@@ -37,11 +37,6 @@
     <p class="error">{{ errorMessage() }}</p>
   }
 
-  <!-- Confirm a successful withdrawal. -->
-  @if (successMessage()) {
-    <p>{{ successMessage() }}</p>
-  }
-
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
@@ -49,7 +44,7 @@
   <button
     mat-button
     mat-dialog-close
-    [disabled]="isLoading() || !!successMessage()">
+    [disabled]="isLoading()">
     Cancel
   </button>
 
@@ -59,8 +54,7 @@
     [disabled]="
       withdrawalCents <= 0 ||
       withdrawalCents > currentBalance() ||
-      isLoading() ||
-      !!successMessage()
+      isLoading()
     "
     (click)="submitWithdrawal()">
     {{ isLoading() ? 'Processing...' : 'Withdraw' }}

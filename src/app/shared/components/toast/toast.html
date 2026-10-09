@@ -1,0 +1,10 @@
+<div *ngIf="toast$ | async as toast"
+     class="toast"
+     [ngClass]="toast.type"
+     role="status"
+     aria-live="polite">
+  <span>{{ toast.text }}</span>
+  <button type="button" class="toast-close" aria-label="Close notification" (click)="dismiss()">
+    &times;
+  </button>
+</div>

@@ -12,6 +12,8 @@ import { CentsIntegerToDollarStringPipe } from '../../pipes/cents-integer-to-dol
 import { NumericInputDirective } from '../../directives/numeric-input-directive';
 import { ProgressBar } from '../../../progress-bar/progress-bar';
 
+import { ToastService } from '../../../services/toast.service';
+
 @Component({
   imports: [
     NumericInputDirective,
@@ -34,6 +36,8 @@ export class Withdraw {
   private auth = inject(AuthService);
   private transactions = inject(TransactionService);
   private dialogRef = inject(MatDialogRef);
+  private toast = inject(ToastService);
+
 
   // The user's current balance is stored in whole cents.
   currentBalance = computed(() => this.auth.currentUser()?.balance ?? 0);
@@ -46,15 +50,14 @@ export class Withdraw {
     return Math.round((this.withdrawalAmount ?? 0) * 100);
   }
 
-  // Track loading, errors, and successful withdrawals.
+  // Track loading and errors.
   isLoading = signal(false);
   errorMessage = signal('');
-  successMessage = signal('');
 
   submitWithdrawal() {
 
     // Prevent duplicate submissions.
-    if (this.isLoading() || this.successMessage()) {
+    if (this.isLoading()) {
       return;
     }
 
@@ -65,7 +68,6 @@ export class Withdraw {
     // Start processing and clear previous messages.
     this.isLoading.set(true);
     this.errorMessage.set('');
-    this.successMessage.set('');
 
     // Prevent closing the dialog while processing.
     this.dialogRef.disableClose = true;
@@ -93,16 +95,11 @@ export class Withdraw {
         return;
       }
 
-      // Confirm the successful withdrawal.
-      this.successMessage.set('Withdrawal successful!');
+      // Toast Notification
+      this.toast.show("Withdraw Successful.");
 
-      // Keep the confirmation visible briefly.
-      setTimeout(() => {
-
-        // Close the dialog and return the transaction result.
-        this.dialogRef.close(result);
-
-      }, 1000);
+      // Close the dialog and return the transaction result.
+      this.dialogRef.close(result);
 
     }, 1000);
   }

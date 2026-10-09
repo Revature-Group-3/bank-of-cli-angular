@@ -4,7 +4,9 @@
 
    :host {
     display: block;
-    min-height: 100vh;
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
 
     background: linear-gradient(
         to right,
@@ -20,9 +22,12 @@
 
    .responsive-grid {
     display: grid;
+    grid-template-rows: auto auto minmax(0, 1fr);
+    height: 100%;
+    min-height: 0;
     background: transparent;
-    padding: 1.5rem;
-    gap: 1.5rem;
+    padding: 1rem;
+    gap: 1rem;
 }
 
 /* =========================
@@ -40,6 +45,19 @@
     border-radius: 16px;
 
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+
+.transaction-history-card {
+    min-height: 0;
+    overflow: hidden;
+}
+
+.transaction-history-card mat-card-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
 }
 
 
@@ -83,8 +101,10 @@ mat-card-content p {
 
 .transaction-history-table {
     display: block;
-
-    margin-top: 1rem;
+    flex: 1 1 auto;
+    min-height: 0;
+    height: 100%;
+    margin-top: .01rem;
 }
 
 

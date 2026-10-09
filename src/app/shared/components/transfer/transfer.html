@@ -21,7 +21,7 @@
       appNumericInput
       [decimals]="2"
       inputmode="decimal"
-      [disabled]="isLoading() || !!successMessage()"
+      [disabled]="isLoading()"
     >
 
     <span matTextPrefix>$&nbsp;</span>
@@ -37,7 +37,7 @@
       maxlength="30"
       minlength="5"
       [(ngModel)]="recipient"
-      [disabled]="isLoading() || !!successMessage()"
+      [disabled]="isLoading()"
     >
   </mat-form-field>
 
@@ -52,11 +52,6 @@
     <p class="error">{{ errorMessage() }}</p>
   }
 
-  <!-- Display a successful transfer confirmation. -->
-  @if (successMessage()) {
-    <p>{{ successMessage() }}</p>
-  }
-
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
@@ -65,7 +60,7 @@
   <button
     mat-button
     mat-dialog-close
-    [disabled]="isLoading() || !!successMessage()">
+    [disabled]="isLoading()">
     Cancel
   </button>
 
@@ -75,8 +70,7 @@
     [disabled]="
       transferCents <= 0 ||
       transferCents > currentBalance() ||
-      isLoading() ||
-      !!successMessage()
+      isLoading()
     "
     (click)="submitTransfer()">
     {{ isLoading() ? 'Processing...' : 'Transfer' }}
