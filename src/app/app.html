@@ -24,7 +24,9 @@
 
 <!-- For logged-in mobile viewers -->
 @else if (loggedIn() != null) {
-    <router-outlet />
+    <main class="mobile-content">
+        <router-outlet />
+    </main>
     <app-mobile-navbar></app-mobile-navbar>
 }
 
