@@ -1,0 +1,42 @@
+.toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 2000;
+  padding: 12px 20px;
+  border-radius: 6px;
+  color: white;
+  font-weight: 500;
+  animation: slideIn 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.success {
+  background-color: #0056b3;
+}
+
+.error {
+  background-color: #f44336;
+}
+
+.toast-close {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
