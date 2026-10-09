@@ -1,0 +1,22 @@
+:host {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 1000;
+}
+
+.mobile-navbar {
+    display: flex;
+    width: 100%;
+    box-sizing: border-box;
+    z-index: 100;
+    padding-bottom: env(safe-area-inset-bottom);
+}
+
+.mobile-navbar button {
+    font-size: 18px;
+}
+
+.sign-out {
+    margin-left: auto;
+}

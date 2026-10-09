@@ -35,6 +35,11 @@
   animation: slide-out-content 0.8s ease-in 0.2s forwards;
 }
 
+.mobile-content {
+  padding-bottom: calc(56px + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+}
+
 /*
 When loggedIn() turns null, Angular adds the slide-out class, waits for
 the animation to finish, and only then removes the element.
