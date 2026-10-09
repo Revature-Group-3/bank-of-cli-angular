@@ -55,7 +55,6 @@
 .register-card {
     width: 100%;
     max-width: 520px;
-    max-height: 670px;
 
     padding: 2rem;
 
@@ -75,7 +74,7 @@
    ========================= */
 
 .register-header {
-    margin-bottom: 1.75rem;
+    margin-bottom: 2rem;
 }
 
 .register-header h2 {
@@ -246,29 +245,84 @@ input[matInput]:focus::placeholder {
     }
 }
 
-@media (max-height: 700px) {
+/* =========================
+   Short Screens
+   ========================= */
+
+   @media (max-height: 850px) {
+
     .register-page {
-        padding-block: 0.5rem;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+        gap: 2rem;
     }
 
     .brand-title {
-        margin: 0.25rem 0 0.5rem;
-        font-size: 1.75rem;
+        margin-top: 0.25rem;
+        margin-bottom: 1rem;
+
+        font-size: 2rem;
     }
 
     .register-card {
-        padding: 1rem;
+        padding: 1.5rem;
     }
 
     .register-header {
-        margin-bottom: 0.75rem;
+        margin-bottom: 1rem;
+    }
+
+    .register-header h2 {
+        font-size: 1.5rem;
     }
 
     form {
-        gap: 0.35rem;
+        gap: 0.4rem;
+    }
+
+    .register-button {
+        height: 46px;
+        margin-top: 0.25rem;
     }
 
     .login-link {
         margin-top: 0.5rem;
+    }
+}
+
+@media (max-height: 700px) {
+
+    .register-page {
+        padding: 0.5rem 1rem;
+    }
+
+    .brand-title {
+        font-size: 1.7rem;
+        margin: 0 0 0.5rem;
+    }
+
+    .register-card {
+        padding: 1rem 1.5rem;
+    }
+
+    .register-header {
+        margin-bottom: 0.5rem;
+    }
+
+    .register-header h2 {
+        font-size: 1.35rem;
+    }
+
+    form {
+        gap: 0.2rem;
+    }
+
+    .register-button {
+        height: 42px;
+    }
+
+    .login-link {
+        margin-top: 0.25rem;
+        font-size: 0.85rem;
     }
 }
