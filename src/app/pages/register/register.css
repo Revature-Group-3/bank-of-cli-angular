@@ -271,7 +271,7 @@ input[matInput]:focus::placeholder {
     .register-header {
         margin-bottom: 1rem;
     }
-
+    
     .register-header h2 {
         font-size: 1.5rem;
     }
