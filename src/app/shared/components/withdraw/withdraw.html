@@ -1,34 +1,69 @@
-<!-- For now it only displays the word deposit and account balance but in the future if we have more accounts we can display a account drop down list. -->
+
 <h2 mat-dialog-title>Withdraw</h2>
 
 <mat-dialog-content>
 
   <p>Current Balance</p>
+
+  <!-- Preserve the team's currency formatting. -->
   <h3>{{ currentBalance() | centsIntegerToDollarString }}</h3>
 
   <mat-form-field appearance="outline">
     <mat-label>Withdraw Amount</mat-label>
-    <!--Ensure the input is a positive number of at least 1 cent-->
-    <input matInput placeholder="0" min="0.01" [(ngModel)]="withdrawalAmount" appNumericInput [decimals]="2"
-      inputmode="decimal"> <span matTextPrefix>$&nbsp;</span>
 
+    <!-- Preserve the team's numeric input validation. -->
+    <input
+      matInput
+      placeholder="0"
+      min="0.01"
+      [(ngModel)]="withdrawalAmount"
+      appNumericInput
+      [decimals]="2"
+      inputmode="decimal"
+      [disabled]="isLoading() || !!successMessage()"
+    >
+
+    <span matTextPrefix>$&nbsp;</span>
   </mat-form-field>
 
-  @if (errorMessage()) {
-  <p class="error">{{ errorMessage() }}</p>
+  <!-- Show Boone's progress bar while processing. -->
+  @if (isLoading()) {
+    <app-progress-bar [showProgress]="isLoading()" />
+    <p>Processing withdrawal...</p>
   }
 
+  <!-- Display errors from the transaction service. -->
+  @if (errorMessage()) {
+    <p class="error">{{ errorMessage() }}</p>
+  }
+
+  <!-- Confirm a successful withdrawal. -->
+  @if (successMessage()) {
+    <p>{{ successMessage() }}</p>
+  }
 
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close>
+
+  <button
+    mat-button
+    mat-dialog-close
+    [disabled]="isLoading() || !!successMessage()">
     Cancel
   </button>
 
-  <!--Disables the withdraw button if the withdrawalAmount surpasses the currentBalance-->
-  <button mat-raised-button [disabled]="withdrawalCents <= 0 || withdrawalCents > currentBalance()"
+  <!-- Preserve insufficient-funds validation. -->
+  <button
+    mat-raised-button
+    [disabled]="
+      withdrawalCents <= 0 ||
+      withdrawalCents > currentBalance() ||
+      isLoading() ||
+      !!successMessage()
+    "
     (click)="submitWithdrawal()">
-    Withdraw
+    {{ isLoading() ? 'Processing...' : 'Withdraw' }}
   </button>
+
 </mat-dialog-actions>

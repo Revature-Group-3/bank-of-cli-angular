@@ -1,37 +1,85 @@
-<!-- For now it only displays the word deposit and account balance but in the future if we have more accounts we can display a account drop down list. -->
+
 <h2 mat-dialog-title>Transfer</h2>
 
 <mat-dialog-content>
 
   <p>Current Balance</p>
+
+  <!-- Preserve the team's currency formatting. -->
   <h3>{{ currentBalance() | centsIntegerToDollarString }}</h3>
 
+  <!-- Transfer amount input. -->
   <mat-form-field appearance="outline">
     <mat-label>Transfer Amount</mat-label>
-    <!--Ensure the input is a positive number of at least 1 cent-->
-    <input matInput placeholder="0" min="0.01" [(ngModel)]="transferAmount" appNumericInput [decimals]="2"
-      inputmode="decimal"> <span matTextPrefix>$&nbsp;</span>
+
+    <!-- Preserve the team's numeric input validation. -->
+    <input
+      matInput
+      placeholder="0"
+      min="0.01"
+      [(ngModel)]="transferAmount"
+      appNumericInput
+      [decimals]="2"
+      inputmode="decimal"
+      [disabled]="isLoading() || !!successMessage()"
+    >
+
+    <span matTextPrefix>$&nbsp;</span>
   </mat-form-field>
 
+  <!-- Recipient username input. -->
   <mat-form-field appearance="outline">
     <mat-label>Recipient Username</mat-label>
-    <input matInput type="text" maxLength="30" minlength="5" [(ngModel)]="recipient">
+
+    <input
+      matInput
+      type="text"
+      maxlength="30"
+      minlength="5"
+      [(ngModel)]="recipient"
+      [disabled]="isLoading() || !!successMessage()"
+    >
   </mat-form-field>
 
+  <!-- Display Boone's loading bar while processing. -->
+  @if (isLoading()) {
+    <app-progress-bar [showProgress]="isLoading()" />
+    <p>Processing transfer...</p>
+  }
+
+  <!-- Show existing transaction errors. -->
   @if (errorMessage()) {
-  <p class="error">{{ errorMessage() }}</p>
+    <p class="error">{{ errorMessage() }}</p>
+  }
+
+  <!-- Display a successful transfer confirmation. -->
+  @if (successMessage()) {
+    <p>{{ successMessage() }}</p>
   }
 
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close>
+
+  <!-- Disable cancellation during processing. -->
+  <button
+    mat-button
+    mat-dialog-close
+    [disabled]="isLoading() || !!successMessage()">
     Cancel
   </button>
 
-  <!--Disables the withdraw button if the transferAmount surpasses the currentBalance-->
-  <button mat-raised-button [disabled]="transferCents <= 0 || transferCents > currentBalance()"
+  <!-- Preserve the team's balance validation. -->
+  <button
+    mat-raised-button
+    [disabled]="
+      transferCents <= 0 ||
+      transferCents > currentBalance() ||
+      isLoading() ||
+      !!successMessage()
+    "
     (click)="submitTransfer()">
-    Transfer
+    {{ isLoading() ? 'Processing...' : 'Transfer' }}
   </button>
+
 </mat-dialog-actions>
