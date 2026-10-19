@@ -1,8 +1,16 @@
-import { inject, Service, signal } from '@angular/core';
-import { Account } from '../models/account';
-import { HttpClient } from '@angular/common/http';
+import { inject, Injectable, signal } from '@angular/core';
+import { Observable, tap } from 'rxjs';
 
-@Service()
+import { Account } from '../models/account';
+import {
+  ApiService,
+  LoginResponse,
+  RegisterRequest
+} from './http-client-service';
+
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthService {
   /**
    * AuthService : acts as DAO or data access object here, instead of calling a REST controller.
@@ -21,18 +29,35 @@ export class AuthService {
 
   // login function() property
   // A signal to keep track of login state
-  currentUser = signal<Account | null>(null);
+  currentUser = signal<Omit<Account, 'password'> | null>(null);
+
+  private token = signal<string | null>(null);
 
   // For testing dummy data :json
   // Inject httpClient: make sure HttpClient is imported from @angular/common/http
-  private http = inject(HttpClient);
-
+  // HTTP requests now go through ApiService.
+  private api = inject(ApiService);
 
   constructor() {
     // .subscribe() needs a callback saying what to do once the data arrives.
-    this.http.get<Account[]>('/accounts.json')
-      .subscribe(data => this.accounts.set(data));
+    this.api.getMockAccounts().subscribe({
+      next: data => this.accounts.set(data),
+      error: () => {
+        console.warn('[AuthService] Mock accounts could not be loaded.');
+      }
+    });
+  
+    // TEMPORARY LOCAL TESTING — remove before committing.
+    this.currentUser.set({
+      id: 1,
+      firstName: 'Test',
+      lastName: 'User',
+      username: 'test@example.com',
+      balance: 150000
+    });
   }
+  
+  // TEMPORARY LOCAL TESTING — remove before committing.
 
   /* .find() returns either the matching account or undefined, so the return type
    * is Account | undefined:
@@ -64,32 +89,24 @@ export class AuthService {
     }
   }
 
-
   // ': Account | null' means of type account or null to return when this function is called.
   // Omit : a typescript utility type, that creates a new type by taking an existing type and removing some fields.
   // in this case the 'id' field is removed
-  public register(account: Omit<Account, 'id'>): Account | null {
+  public register(request: RegisterRequest): Observable<unknown> {
+    // The preserved comments below describe the previous mock implementation.
+    // The backend now handles account creation, duplicate checks, and IDs.
+
     // 1. Get current list
-    const current = this.accounts();
 
     // Check if account already exists by matching on username:
     // .some() goes through the array and returns true if any
     // account matches the condition.ååå
-    const exists = current.some(a => a.username === account.username);
-    if (exists) { return null; }
 
     // 2. Figure out the next id (nextId)
     // - if current is empty -> 1
     // - otherwise -> highest id(also latest generated id) + 1
-    let nextId: number;
 
     // Check if list is empty
-    if (current.length === 0) {
-      nextId = 1;
-    } else {
-      const ids = current.map(a => a.id); // [1,2,5] -> just the ids mapped out
-      nextId = Math.max(...ids) + 1;    // highest id + 1
-    }
 
     // 3. Build the new account
     /**
@@ -104,19 +121,15 @@ export class AuthService {
         }
           Then.....
      */
-    const newAccount: Account = { ...account, id: nextId }
 
     // 4. Add it to the signal (return a NEW array, don't push)
     // Updates the accounts list by adding a new account.
-    this.accounts.update(accounts => [...accounts, newAccount]);
 
     // Temporary log result for testing purposes.
-    console.log('All accounts:', this.accounts());
+    // Account logging removed to avoid exposing passwords.
 
-    return newAccount;
-
+    return this.api.register(request);
   }
-
 
   /**
    * login()
@@ -130,26 +143,30 @@ export class AuthService {
    * Return: Account, and handoff + redirect to dashboard.
    */
 
-  public login(username: string, password: string): Account | null {
+  public login(
+    email: string,
+    password: string
+  ): Observable<LoginResponse> {
 
     // 1. get current Accounts
-    const currentAccounts = this.accounts();
+    // Login now requests authentication from the backend.
 
     // Check if account already exists:
-    const userExists = currentAccounts.find(u => u.username === username && u.password === password);
+    return this.api.login({ email, password }).pipe(
+      tap(response => {
+        this.token.set(response.token);
+        this.currentUser.set(response.account);
+      })
+    );
+  }
 
-    if (userExists) {
-      this.currentUser.set(userExists);
-      return userExists;
-    } else {
-      return null;
-    }
-
+  public getToken(): string | null {
+    return this.token();
   }
 
   // Logout option when account holder is logged in
   public logout(): void {
+    this.token.set(null);
     this.currentUser.set(null);
   }
-
 }

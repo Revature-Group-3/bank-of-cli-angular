@@ -1,35 +1,84 @@
 import { TestBed } from '@angular/core/testing';
-import { provideHttpClient } from '@angular/common/http';
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import {
+  HttpErrorResponse,
+  provideHttpClient
+} from '@angular/common/http';
+import {
+  HttpTestingController,
+  provideHttpClientTesting
+} from '@angular/common/http/testing';
+
 import { TransactionService } from './transaction-service';
 import { AuthService } from './auth-service';
+import {
+  ApiService,
+  ApiTransferResponse
+} from './http-client-service';
 
 // all money in these tests is in whole cents: 150000 means $1,500.00
 describe('TransactionService', () => {
   let service: TransactionService;
   let auth: AuthService;
+  let httpTesting: HttpTestingController;
+  let transferUrl: string;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideHttpClient(), provideHttpClientTesting()],
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting()
+      ],
     });
+
+    httpTesting = TestBed.inject(HttpTestingController);
     service = TestBed.inject(TransactionService);
     auth = TestBed.inject(AuthService);
 
+    transferUrl = `${TestBed.inject(ApiService).apiUrl}/transfers`;
+
     // hand AuthService a fake accounts.json, then log in as that user
-    TestBed.inject(HttpTestingController)
-      .expectOne('/accounts.json')
-      .flush([
-        { id: 1, firstName: 'Hal', lastName: 'Jordan', username: 'hal@email.com', password: 'green', balance: 150000 },
-        { id: 2, firstName: 'John', lastName: 'Stewart', username: 'js@email.com', password: 'lantern', balance: 32050 },
-      ]);
-    auth.login('hal@email.com', 'green');
+    httpTesting.expectOne('/accounts.json').flush([
+      {
+        id: 1,
+        firstName: 'Hal',
+        lastName: 'Jordan',
+        username: 'hal@email.com',
+        password: 'green',
+        balance: 150000
+      },
+      {
+        id: 2,
+        firstName: 'John',
+        lastName: 'Stewart',
+        username: 'js@email.com',
+        password: 'lantern',
+        balance: 32050
+      }
+    ]);
+
+    // Set component-facing authentication state directly.
+    // Login HTTP behavior belongs in separate authentication tests.
+    auth.currentUser.set({
+      id: 1,
+      firstName: 'Hal',
+      lastName: 'Jordan',
+      username: 'hal@email.com',
+      balance: 150000
+    });
+  });
+
+  afterEach(() => {
+    httpTesting.verify();
   });
 
   it('adds a deposit to the balance and returns the transaction', () => {
     const result = service.deposit({ accountId: 1, amount: 5000 });
 
-    expect(result).toMatchObject({ accountId: 1, type: 'DEPOSIT', amount: 5000 });
+    expect(result).toMatchObject({
+      accountId: 1,
+      type: 'DEPOSIT',
+      amount: 5000
+    });
     expect(auth.currentUser()?.balance).toBe(155000);
   });
 
@@ -58,7 +107,11 @@ describe('TransactionService', () => {
   it('subtracts a withdrawal from the balance and returns the transaction', () => {
     const result = service.withdraw({ accountId: 1, amount: 20000 });
 
-    expect(result).toMatchObject({ accountId: 1, type: 'WITHDRAWAL', amount: 20000 });
+    expect(result).toMatchObject({
+      accountId: 1,
+      type: 'WITHDRAWAL',
+      amount: 20000
+    });
     expect(auth.currentUser()?.balance).toBe(130000);
   });
 
@@ -77,78 +130,163 @@ describe('TransactionService', () => {
   });
 
   it('rejects a deposit over the limit', () => {
-    const result = service.deposit({ accountId: 1, amount: 1000001 });
+    const result = service.deposit({
+      accountId: 1,
+      amount: 1000001
+    });
 
-    expect(result).toMatchObject({ status: 400, message: expect.stringContaining('limit') });
+    expect(result).toMatchObject({
+      status: 400,
+      message: expect.stringContaining('limit')
+    });
     expect(auth.currentUser()?.balance).toBe(150000);
   });
 
   it('allows a deposit of exactly the limit', () => {
-    const result = service.deposit({ accountId: 1, amount: 1000000 });
+    const result = service.deposit({
+      accountId: 1,
+      amount: 1000000
+    });
 
     expect(result).toMatchObject({ type: 'DEPOSIT' });
     expect(auth.currentUser()?.balance).toBe(1150000);
   });
 
-  it('moves money from the sender to the recipient and returns the transaction', () => {
-    const result = service.transfer({ senderAccountId: 1, recipientAccountId: 2, amount: 10000 });
+  it('posts the transfer request and returns the backend transaction', () => {
+    const payload = {
+      recipientAccountEmail: 'js@email.com',
+      amountInCents: 10000
+    };
 
-    expect(result).toMatchObject({ senderAccountId: 1, recipientAccountId: 2, type: 'TRANSFER', amount: 10000 });
-    expect(auth.currentUser()?.balance).toBe(140000);
-    expect(auth.getAccountByID(2)?.balance).toBe(42050);
-  });
+    const response: ApiTransferResponse = {
+      id: 51,
+      senderAccountEmail: 'hal@email.com',
+      recipientAccountEmail: 'js@email.com',
+      type: 'TRANSFER',
+      amountInCents: 10000,
+      timestamp: '2026-10-19T19:00:00Z'
+    };
 
-  it('rejects a transfer to your own account', () => {
-    const result = service.transfer({ senderAccountId: 1, recipientAccountId: 1, amount: 10000 });
+    let received: ApiTransferResponse | undefined;
 
-    expect(result).toMatchObject({ status: 400 });
-    expect(auth.currentUser()?.balance).toBe(150000);
-  });
+    service.transfer(payload).subscribe(result => {
+      received = result;
+    });
 
-  it('rejects a transfer to an account that does not exist', () => {
-    const result = service.transfer({ senderAccountId: 1, recipientAccountId: 99, amount: 10000 });
+    const request = httpTesting.expectOne(transferUrl);
 
-    expect(result).toMatchObject({ status: 404 });
-    expect(auth.currentUser()?.balance).toBe(150000);
-  });
+    expect(request.request.method).toBe('POST');
+    expect(request.request.body).toEqual(payload);
 
-  it('rejects a transfer larger than the sender balance and changes neither account', () => {
-    const result = service.transfer({ senderAccountId: 1, recipientAccountId: 2, amount: 200000 });
+    request.flush(response);
 
-    expect(result).toMatchObject({ status: 400 });
+    expect(received).toEqual(response);
+
+    // The frontend no longer calculates transfer balances.
     expect(auth.currentUser()?.balance).toBe(150000);
     expect(auth.getAccountByID(2)?.balance).toBe(32050);
   });
 
-  it('rejects a transfer over the limit', () => {
-    const result = service.transfer({ senderAccountId: 1, recipientAccountId: 2, amount: 1000001 });
+  it('passes backend transfer errors to the caller', () => {
+    const scenarios = [
+      {
+        recipientAccountEmail: 'hal@email.com',
+        amountInCents: 10000,
+        status: 400,
+        statusText: 'Bad Request',
+        message: 'You cannot transfer funds to your own account.'
+      },
+      {
+        recipientAccountEmail: 'missing@email.com',
+        amountInCents: 10000,
+        status: 404,
+        statusText: 'Not Found',
+        message: 'The recipient account could not be found.'
+      },
+      {
+        recipientAccountEmail: 'js@email.com',
+        amountInCents: 200000,
+        status: 400,
+        statusText: 'Bad Request',
+        message: 'Insufficient funds.'
+      },
+      {
+        recipientAccountEmail: 'js@email.com',
+        amountInCents: 1000001,
+        status: 400,
+        statusText: 'Bad Request',
+        message: 'The transfer amount exceeds the maximum allowed limit.'
+      }
+    ];
 
-    expect(result).toMatchObject({ status: 400, message: expect.stringContaining('limit') });
-    expect(auth.currentUser()?.balance).toBe(150000);
+    for (const scenario of scenarios) {
+      let receivedError: HttpErrorResponse | undefined;
+      let succeeded = false;
+
+      service.transfer({
+        recipientAccountEmail: scenario.recipientAccountEmail,
+        amountInCents: scenario.amountInCents
+      }).subscribe({
+        next: () => {
+          succeeded = true;
+        },
+        error: (error: HttpErrorResponse) => {
+          receivedError = error;
+        }
+      });
+
+      const request = httpTesting.expectOne(transferUrl);
+
+      request.flush(
+        {
+          status: scenario.status,
+          message: scenario.message,
+          timestamp: '2026-10-19T19:00:00Z'
+        },
+        {
+          status: scenario.status,
+          statusText: scenario.statusText
+        }
+      );
+
+      expect(succeeded).toBe(false);
+      expect(receivedError?.status).toBe(scenario.status);
+      expect(receivedError?.error.message).toBe(scenario.message);
+      expect(auth.currentUser()?.balance).toBe(150000);
+      expect(auth.getAccountByID(2)?.balance).toBe(32050);
+    }
   });
 
-  it("lists the logged-in account's transactions, newest first", () => {
+  it("lists the logged-in account's mock transactions, newest first", () => {
     service.deposit({ accountId: 1, amount: 5000 });
     service.withdraw({ accountId: 1, amount: 2000 });
-    service.transfer({ senderAccountId: 1, recipientAccountId: 2, amount: 10000 });
 
     const result = service.getRecentTransactions(1);
 
     expect(result).toMatchObject({
-      transactions: [{ type: 'TRANSFER' }, { type: 'WITHDRAWAL' }, { type: 'DEPOSIT' }],
+      transactions: [
+        { type: 'WITHDRAWAL' },
+        { type: 'DEPOSIT' }
+      ],
     });
   });
 
-  it("shows a transfer to the recipient too, but not the sender's other transactions", () => {
+  it("does not include the sender's mock transactions for another account", () => {
     service.deposit({ accountId: 1, amount: 5000 });
-    service.transfer({ senderAccountId: 1, recipientAccountId: 2, amount: 10000 });
+
     auth.logout();
-    auth.login('js@email.com', 'lantern');
+    auth.currentUser.set({
+      id: 2,
+      firstName: 'John',
+      lastName: 'Stewart',
+      username: 'js@email.com',
+      balance: 32050
+    });
 
     const result = service.getRecentTransactions(2);
 
     expect(result).toEqual({
-      transactions: [expect.objectContaining({ type: 'TRANSFER', recipientAccountId: 2 })],
+      transactions: []
     });
   });
 
