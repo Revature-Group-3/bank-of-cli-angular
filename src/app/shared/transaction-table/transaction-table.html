@@ -1,5 +1,7 @@
 <div class="table-position">
-  @if (errorMessage()) {
+  @if (isLoading()) {
+  <p>Loading transactions...</p>
+  } @else if (errorMessage()) {
   <p class="error-message">{{ errorMessage() }}</p>
   } @else {
   <div class="table-rows">
