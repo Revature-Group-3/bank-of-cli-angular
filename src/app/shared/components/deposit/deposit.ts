@@ -1,4 +1,3 @@
-
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -64,6 +63,12 @@ export class Deposit {
 
     // Save the submitted account and amount.
     const user = this.auth.currentUser();
+
+    // makes sure user is not null
+    if (!user) {
+      this.errorMessage.set('You must be logged in to make a deposit.');
+      return;
+    }
     const amount = this.depositCents;
 
     // Start loading and clear previous messages.
@@ -73,35 +78,20 @@ export class Deposit {
     // Prevent closing the dialog during processing.
     this.dialogRef.disableClose = true;
 
-    // Temporary delay while transactions use mock data.
-    // Replace with request-based loading when using an API.
-    setTimeout(() => {
-
-      // The transaction service expects whole cents.
-      const result = this.transactions.deposit({
-        accountId: user?.id ?? 0,
-        amount: amount
-      });
-
-      // Processing has finished.
-      this.isLoading.set(false);
-
-      // Preserve the service's existing error handling.
-      if ('status' in result) {
-        this.errorMessage.set(result.message);
+    this.transactions.deposit({ accountId: user.id, amount }).subscribe({
+      next: transaction => {
+        this.auth.updateBalance(user.username, this.currentBalance() + amount);
+        this.isLoading.set(false);
+        this.toast.show('Deposit Successful.');
+        this.dialogRef.close(transaction);
+        this.router.navigate(['/dashboard']);
+      },
+      error: err => {
+        this.isLoading.set(false);
         this.dialogRef.disableClose = false;
-        return;
+        this.errorMessage.set(
+          err.error?.message ?? err.message ?? 'Deposit Failed.');
       }
-
-      // Toast Notification
-      this.toast.show("Deposit Successful.");
-
-      // Close the dialog and return the original transaction result.
-      this.dialogRef.close(result);
-
-      // Return to the dashboard.
-      this.router.navigate(['/dashboard']);
-
-    }, 1000);
+    });
   }
 }

@@ -1,10 +1,10 @@
-
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { Router } from '@angular/router';
 
 import { AuthService } from '../../../services/auth-service';
 import { TransactionService } from '../../../services/transaction-service';
@@ -37,7 +37,7 @@ export class Withdraw {
   private transactions = inject(TransactionService);
   private dialogRef = inject(MatDialogRef);
   private toast = inject(ToastService);
-
+  private router = inject(Router);
 
   // The user's current balance is stored in whole cents.
   currentBalance = computed(() => this.auth.currentUser()?.balance ?? 0);
@@ -63,6 +63,12 @@ export class Withdraw {
 
     // Save the submitted account and amount.
     const user = this.auth.currentUser();
+
+    if (!user) {
+      this.errorMessage.set('You must be logged in to make a withdrawal.');
+      return;
+    }
+
     const amount = this.withdrawalCents;
 
     // Start processing and clear previous messages.
@@ -71,36 +77,21 @@ export class Withdraw {
 
     // Prevent closing the dialog while processing.
     this.dialogRef.disableClose = true;
-
-    // Temporary delay while transactions use mock data.
-    // A real API request should control this loading state.
-    setTimeout(() => {
-
-      // Preserve the team's existing withdrawal operation.
-      // The service expects whole cents.
-      const result = this.transactions.withdraw({
-        accountId: user?.id ?? 0,
-        amount: amount
-      });
-
-      // Processing has finished.
-      this.isLoading.set(false);
-
-      // Preserve the existing service error handling.
-      if ('status' in result) {
-        this.errorMessage.set(result.message);
-
-        // Allow another attempt or cancellation.
+    
+    this.transactions.withdraw({ accountId: user.id, amount }).subscribe({
+      next: transaction => {
+        this.auth.updateBalance(user.username, this.currentBalance() - amount);
+        this.isLoading.set(false);
+        this.toast.show('Withdraw Successful.');
+        this.dialogRef.close(transaction);
+        this.router.navigate(['/dashboard']);
+      },
+      error: err => {
+        this.isLoading.set(false);
         this.dialogRef.disableClose = false;
-        return;
+        this.errorMessage.set(
+          err.error?.message ?? err.message ?? 'Withdraw Failed.');
       }
-
-      // Toast Notification
-      this.toast.show("Withdraw Successful.");
-
-      // Close the dialog and return the transaction result.
-      this.dialogRef.close(result);
-
-    }, 1000);
+    });
   }
 }
