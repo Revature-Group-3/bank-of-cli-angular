@@ -69,7 +69,7 @@ export class Deposit {
       this.errorMessage.set('You must be logged in to make a deposit.');
       return;
     }
-    const amount = this.depositCents;
+    const amountInCents = this.depositCents;
 
     // Start loading and clear previous messages.
     this.isLoading.set(true);
@@ -78,9 +78,9 @@ export class Deposit {
     // Prevent closing the dialog during processing.
     this.dialogRef.disableClose = true;
 
-    this.transactions.deposit({ accountId: user.id, amount }).subscribe({
+    this.transactions.deposit({ amountInCents }).subscribe({
       next: transaction => {
-        this.auth.updateBalance(user.username, this.currentBalance() + amount);
+        this.auth.updateBalance(user.username, this.currentBalance() + amountInCents);
         this.isLoading.set(false);
         this.toast.show('Deposit Successful.');
         this.dialogRef.close(transaction);

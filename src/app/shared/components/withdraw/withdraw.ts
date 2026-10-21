@@ -69,7 +69,7 @@ export class Withdraw {
       return;
     }
 
-    const amount = this.withdrawalCents;
+    const amountInCents = this.withdrawalCents;
 
     // Start processing and clear previous messages.
     this.isLoading.set(true);
@@ -77,10 +77,10 @@ export class Withdraw {
 
     // Prevent closing the dialog while processing.
     this.dialogRef.disableClose = true;
-    
-    this.transactions.withdraw({ accountId: user.id, amount }).subscribe({
+
+    this.transactions.withdraw({ amountInCents }).subscribe({
       next: transaction => {
-        this.auth.updateBalance(user.username, this.currentBalance() - amount);
+        this.auth.updateBalance(user.username, this.currentBalance() - amountInCents);
         this.isLoading.set(false);
         this.toast.show('Withdraw Successful.');
         this.dialogRef.close(transaction);
