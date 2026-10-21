@@ -44,7 +44,7 @@ export class TransactionService {
     }
 
     // rule: a single deposit cannot exceed the limit
-    if (request.amount > MAX_TRANSACTION_AMOUNT) {
+    if (request.amountInCents > MAX_TRANSACTION_AMOUNT) {
       return this.observableError(400, 'The deposit/transfer amount exceeds the maximum allowed limit of $10,000.');
     }
 

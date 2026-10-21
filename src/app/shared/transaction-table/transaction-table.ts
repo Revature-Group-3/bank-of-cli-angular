@@ -43,14 +43,14 @@ export class TransactionTable {
     this.transactionService.getRecentTransactions()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-          next: response => {
+        next: response => {
           this.dataSource.set(
             response.transactions.map(transaction => ({
               type: transaction.type,
               date: transaction.timestamp,
               status: 'Loaded in recent transactions.',
-              amount: transaction.amount,
-            })));  
+              amount: transaction.amountInCents,
+            })));
           this.isLoading.set(false);
         },
         error: err => {

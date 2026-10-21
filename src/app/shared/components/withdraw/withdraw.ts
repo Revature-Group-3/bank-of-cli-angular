@@ -77,8 +77,8 @@ export class Withdraw {
 
     // Prevent closing the dialog while processing.
     this.dialogRef.disableClose = true;
-    
-    this.transactions.withdraw({ accountId: user.id, amount }).subscribe({
+
+    this.transactions.withdraw({ amount }).subscribe({
       next: transaction => {
         this.auth.updateBalance(user.username, this.currentBalance() - amount);
         this.isLoading.set(false);

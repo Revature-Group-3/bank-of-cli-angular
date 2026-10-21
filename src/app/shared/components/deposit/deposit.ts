@@ -78,7 +78,7 @@ export class Deposit {
     // Prevent closing the dialog during processing.
     this.dialogRef.disableClose = true;
 
-    this.transactions.deposit({ accountId: user.id, amount }).subscribe({
+    this.transactions.deposit({ amount }).subscribe({
       next: transaction => {
         this.auth.updateBalance(user.username, this.currentBalance() + amount);
         this.isLoading.set(false);
