@@ -33,13 +33,13 @@ export class TransactionService {
   private transactions = signal<Transaction[]>([]);
 
   private observableError(status: number, message: string): Observable<never> {
-    return throwError(() => ({status, message,timestamp: new Date().toISOString()} satisfies ApiError));
+    return throwError(() => ({ status, message, timestamp: new Date().toISOString() } satisfies ApiError));
   }
 
   deposit(request: DepositRequest): Observable<StandardTransaction> {
 
     // rule: the amount must be a whole number of cents, above zero
-    if (!Number.isInteger(request.amount) || request.amount <= 0) {
+    if (!Number.isInteger(request.amountInCents) || request.amountInCents <= 0) {
       return this.observableError(400, 'The transaction amount must be greater than zero.');
     }
 
@@ -54,7 +54,7 @@ export class TransactionService {
   withdraw(request: WithdrawalRequest): Observable<StandardTransaction> {
 
     // rule: the amount must be a whole number of cents, above zero
-    if (!Number.isInteger(request.amount) || request.amount <= 0) {
+    if (!Number.isInteger(request.amountInCents) || request.amountInCents <= 0) {
       return this.observableError(400, 'The transaction amount must be greater than zero.');
     }
 
