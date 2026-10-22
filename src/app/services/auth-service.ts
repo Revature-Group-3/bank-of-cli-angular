@@ -46,15 +46,6 @@ export class AuthService {
         console.warn('[AuthService] Mock accounts could not be loaded.');
       }
     });
-
-    // TEMPORARY LOCAL TESTING — remove before committing.
-    this.currentUser.set({
-      id: 1,
-      firstName: 'Test',
-      lastName: 'User',
-      username: 'test@example.com',
-      balance: 150000
-    });
   }
 
   // TEMPORARY LOCAL TESTING — remove before committing.
