@@ -17,7 +17,8 @@ export interface LoginRequest {
 
 export interface LoginResponse {
   token: string;
-  account: Omit<Account, 'password'>;
+  // Omitted to match the backend, which only expects a token
+  // account: Omit<Account, 'password'>;
 }
 
 export interface RegisterRequest {
