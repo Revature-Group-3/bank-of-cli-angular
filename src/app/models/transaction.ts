@@ -14,6 +14,7 @@ export interface TransferTransaction {
   type: 'TRANSFER';
   amountInCents: number;
   timestamp: string;
+  direction?: string;
 }
 
 export type Transaction = StandardTransaction | TransferTransaction;
