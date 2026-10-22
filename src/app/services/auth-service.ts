@@ -46,7 +46,7 @@ export class AuthService {
         console.warn('[AuthService] Mock accounts could not be loaded.');
       }
     });
-  
+
     // TEMPORARY LOCAL TESTING — remove before committing.
     this.currentUser.set({
       id: 1,
@@ -56,7 +56,7 @@ export class AuthService {
       balance: 150000
     });
   }
-  
+
   // TEMPORARY LOCAL TESTING — remove before committing.
 
   /* .find() returns either the matching account or undefined, so the return type
@@ -155,7 +155,6 @@ export class AuthService {
     return this.api.login({ email, password }).pipe(
       tap(response => {
         this.token.set(response.token);
-        this.currentUser.set(response.account);
       })
     );
   }
