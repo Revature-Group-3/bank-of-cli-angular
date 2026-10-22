@@ -1,7 +1,7 @@
 // the service sends back, the same as what the user sends in, as well as id, type and timestamp
 export interface StandardTransaction {
   id: number;
-  accountId: number;
+  accountEmail: string;
   type: 'DEPOSIT' | 'WITHDRAWAL';
   amountInCents: number;
   timestamp: string;
@@ -9,8 +9,8 @@ export interface StandardTransaction {
 
 export interface TransferTransaction {
   id: number;
-  senderAccountId: number;
-  recipientAccountId: number;
+  senderAccountEmail: string;
+  recipientAccountEmail: string;
   type: 'TRANSFER';
   amountInCents: number;
   timestamp: string;
