@@ -66,20 +66,20 @@ export class ApiService {
 
   getTransactions(): Observable<RecentTransactionsResponse> {
     return this.http.get<RecentTransactionsResponse>(
-      `${this.apiUrl}/accounts/me/transactions`
+      `${this.apiUrl}/accounts/transactions`
     );
   }
 
   deposit(request: DepositRequest): Observable<StandardTransaction> {
     return this.http.post<StandardTransaction>(
-      `${this.apiUrl}/accounts/me/deposits`,
+      `${this.apiUrl}/accounts/deposit`,
       request
     );
   }
 
   withdraw(request: WithdrawalRequest): Observable<StandardTransaction> {
     return this.http.post<StandardTransaction>(
-      `${this.apiUrl}/accounts/me/withdraw`,
+      `${this.apiUrl}/accounts/withdraw`,
       request
     );
   }
@@ -88,7 +88,7 @@ export class ApiService {
     request: ApiTransferRequest
   ): Observable<ApiTransferResponse> {
     return this.http.post<ApiTransferResponse>(
-      `${this.apiUrl}/transfers`,
+      `${this.apiUrl}/transfer`,
       request
     );
   }
