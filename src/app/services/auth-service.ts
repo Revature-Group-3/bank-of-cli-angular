@@ -155,6 +155,18 @@ export class AuthService {
     return this.api.login({ email, password }).pipe(
       tap(response => {
         this.token.set(response.token);
+
+        // The JWT payload (middle section) holds the account id as "sub" and the email.
+        const claims = JSON.parse(atob(response.token.split('.')[1]));
+
+        // Name and balance aren't in the token; fill them in once the backend has an /accounts/me endpoint.
+        this.currentUser.set({
+          id: Number(claims.sub),
+          username: claims.email,
+          firstName: '',
+          lastName: '',
+          balance: 0
+        });
       })
     );
   }
