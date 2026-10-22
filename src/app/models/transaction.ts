@@ -3,7 +3,7 @@ export interface StandardTransaction {
   id: number;
   accountId: number;
   type: 'DEPOSIT' | 'WITHDRAWAL';
-  amount: number;
+  amountInCents: number;
   timestamp: string;
 }
 
@@ -12,7 +12,7 @@ export interface TransferTransaction {
   senderAccountId: number;
   recipientAccountId: number;
   type: 'TRANSFER';
-  amount: number;
+  amountInCents: number;
   timestamp: string;
 }
 
@@ -20,19 +20,16 @@ export type Transaction = StandardTransaction | TransferTransaction;
 
 // what the page sends in: the account (from the logged-in user) and the amount the user typed
 export interface DepositRequest {
-  accountId: number;
-  amount: number;
+  amountInCents: number;
 }
 
 export interface WithdrawalRequest {
-  accountId: number;
-  amount: number;
+  amountInCents: number;
 }
 
 export interface TransferRequest {
-  senderAccountId: number;
-  recipientAccountId: number;
-  amount: number;
+  recipientAccountEmail: string;
+  amountInCents: number;
 }
 
 // what the service sends back when asked for an account's recent transactions

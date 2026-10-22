@@ -1,6 +1,7 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '../../services/auth-service';
 import { TransactionService } from '../../services/transaction-service';
 import { CentsIntegerToDollarStringPipe } from '../pipes/cents-integer-to-dollar-string-pipe';
@@ -20,45 +21,43 @@ interface TransactionRow {
   templateUrl: './transaction-table.html',
 })
 export class TransactionTable {
+
   private auth = inject(AuthService);
   private transactionService = inject(TransactionService);
+  private destroyRef = inject(DestroyRef);
 
   readonly displayedColumns = ['Type', 'Date', 'Amount'];
+  readonly errorMessage = signal<string | null>(null);
+  readonly dataSource = signal<TransactionRow[]>([]);
+  readonly isLoading = signal(true);
 
-  // the raw result: either { transactions } or an ApiError (or null if nobody is logged in)
-  private result = computed(() => {
-    const id = this.auth.currentUser()?.id;
-    return id === undefined ? null : this.transactionService.getRecentTransactions(id);
-  });
-
-  // shown instead of the table if the call failed
-  readonly errorMessage = computed(() => {
-    const r = this.result();
-    return r && 'message' in r ? r.message : null;
-  });
-
-  // the rows the table displays
-  readonly dataSource = computed<TransactionRow[]>(() => {
-    const r = this.result();
+  constructor() {
     const myId = this.auth.currentUser()?.id;
-    if (!r || 'message' in r || myId === undefined) return [];
 
-    return r.transactions.map((t): TransactionRow => {
-      if (t.type === 'TRANSFER') {
-        const sent = t.senderAccountId === myId;
-        return {
-          type: sent ? 'Transfer sent' : 'Transfer received',
-          date: t.timestamp,
-          status: 'Completed',
-          amount: sent ? -t.amount : t.amount, // negative when money leaves
-        };
-      }
-      return {
-        type: t.type === 'DEPOSIT' ? 'Deposit' : 'Withdrawal',
-        date: t.timestamp,
-        status: 'Completed',
-        amount: t.type === 'DEPOSIT' ? t.amount : -t.amount,
-      };
-    });
-  });
+    if (myId === undefined) {
+      this.errorMessage.set('You must be logged in to view transactions.');
+      this.isLoading.set(false);
+      return;
+    }
+
+    this.transactionService.getRecentTransactions()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: response => {
+          this.dataSource.set(
+            response.transactions.map(transaction => ({
+              type: transaction.type,
+              date: transaction.timestamp,
+              status: 'Loaded in recent transactions.',
+              amount: transaction.amountInCents,
+            })));
+          this.isLoading.set(false);
+        },
+        error: err => {
+          this.errorMessage.set(
+            err.error?.message ?? err.message ?? 'Retrieval Failed.');
+          this.isLoading.set(false);
+        }
+      });
+  }
 }

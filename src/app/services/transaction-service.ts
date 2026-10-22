@@ -33,18 +33,18 @@ export class TransactionService {
   private transactions = signal<Transaction[]>([]);
 
   private observableError(status: number, message: string): Observable<never> {
-    return throwError(() => ({status, message,timestamp: new Date().toISOString()} satisfies ApiError));
+    return throwError(() => ({ status, message, timestamp: new Date().toISOString() } satisfies ApiError));
   }
 
   deposit(request: DepositRequest): Observable<StandardTransaction> {
 
     // rule: the amount must be a whole number of cents, above zero
-    if (!Number.isInteger(request.amount) || request.amount <= 0) {
+    if (!Number.isInteger(request.amountInCents) || request.amountInCents <= 0) {
       return this.observableError(400, 'The transaction amount must be greater than zero.');
     }
 
     // rule: a single deposit cannot exceed the limit
-    if (request.amount > MAX_TRANSACTION_AMOUNT) {
+    if (request.amountInCents > MAX_TRANSACTION_AMOUNT) {
       return this.observableError(400, 'The deposit/transfer amount exceeds the maximum allowed limit of $10,000.');
     }
 
@@ -54,7 +54,7 @@ export class TransactionService {
   withdraw(request: WithdrawalRequest): Observable<StandardTransaction> {
 
     // rule: the amount must be a whole number of cents, above zero
-    if (!Number.isInteger(request.amount) || request.amount <= 0) {
+    if (!Number.isInteger(request.amountInCents) || request.amountInCents <= 0) {
       return this.observableError(400, 'The transaction amount must be greater than zero.');
     }
 
@@ -87,25 +87,8 @@ export class TransactionService {
     return this.api.transfer(request);
   }
 
-  getRecentTransactions(accountId: number): RecentTransactionsResponse | ApiError {
-    const account = this.auth.currentUser();
-
-    // rule: you can only view the transactions of the account you are logged in to
-    if (!account || account.id !== accountId) {
-      return this.error(401, 'You must be logged in to view your recent transactions.');
-    }
-
-    const transactions = this.transactions()
-      // keep the ones this account took part in
-      .filter(t =>
-        t.type === 'TRANSFER'
-          ? t.senderAccountId === accountId || t.recipientAccountId === accountId
-          : t.accountId === accountId,
-      )
-      // newest first
-      .reverse();
-
-    return { transactions };
+  getRecentTransactions(): Observable<RecentTransactionsResponse> {
+    return this.api.getTransactions();
   }
 
   // builds an error shaped like the contract's unsuccessful responses

@@ -47,7 +47,7 @@ export class AuthService {
       }
     });
   }
-  
+
   // TEMPORARY LOCAL TESTING — remove before committing.
 
   /* .find() returns either the matching account or undefined, so the return type
@@ -146,7 +146,6 @@ export class AuthService {
     return this.api.login({ email, password }).pipe(
       tap(response => {
         this.token.set(response.token);
-        this.currentUser.set(response.account);
       })
     );
   }
