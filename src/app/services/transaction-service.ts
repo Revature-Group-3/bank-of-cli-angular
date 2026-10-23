@@ -30,7 +30,7 @@ export class TransactionService {
   private api = inject(ApiService);
   private transactionsChanged = new Subject<void>();
 
-  readonly transactionsSChanged$ = this.transactionsChanged.asObservable();
+  readonly transactionsChanged$ = this.transactionsChanged.asObservable();
 
 
   // every transaction made this session; stands in for the transactions table
