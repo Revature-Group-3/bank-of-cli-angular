@@ -40,10 +40,25 @@ export class TransactionTable {
       return;
     }
 
+    this.loadTransactions();
+
+    this.transactionService.transactionsChanged$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        this.loadTransactions();
+      }
+      )
+  }
+
+  private loadTransactions(): void {
+    this.isLoading.set(true);
+    this.errorMessage.set(null);
+
     this.transactionService.getRecentTransactions()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: response => {
+          // Put your existing response.transactions.map(...) logic here.
           this.dataSource.set(
             response.transactions.map(transaction => {
               const account = transaction.type === 'TRANSFER'
@@ -62,13 +77,15 @@ export class TransactionTable {
               };
             })
           );
+
           this.isLoading.set(false);
         },
         error: err => {
           this.errorMessage.set(
-            err.error?.message ?? err.message ?? 'Retrieval Failed.');
+            err.error?.message ?? err.message ?? 'Retrieval Failed.'
+          );
           this.isLoading.set(false);
         }
-      })
+      });
   }
 }

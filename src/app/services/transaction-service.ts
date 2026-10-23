@@ -14,7 +14,8 @@ import {
   Transaction,
   WithdrawalRequest,
 } from '../models/transaction';
-import { Observable, throwError } from 'rxjs';
+import { Observable, Subject, throwError } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 // all money in this service is in whole cents: 1999 means $19.99
 // the most that can be deposited or transferred in a single transaction: $10,000.00
@@ -27,6 +28,9 @@ export class TransactionService {
   // gives this service access to the logged-in user and the accounts
   private auth = inject(AuthService);
   private api = inject(ApiService);
+  private transactionsChanged = new Subject<void>();
+
+  readonly transactionsSChanged$ = this.transactionsChanged.asObservable();
 
 
   // every transaction made this session; stands in for the transactions table
@@ -48,7 +52,9 @@ export class TransactionService {
       return this.observableError(400, 'The deposit/transfer amount exceeds the maximum allowed limit of $10,000.');
     }
 
-    return this.api.deposit(request);
+    return this.api.deposit(request).pipe(
+      tap(() => this.transactionsChanged.next())
+    );
   }
 
   withdraw(request: WithdrawalRequest): Observable<StandardTransaction> {
@@ -58,7 +64,9 @@ export class TransactionService {
       return this.observableError(400, 'The transaction amount must be greater than zero.');
     }
 
-    return this.api.withdraw(request);
+    return this.api.withdraw(request).pipe(
+      tap(() => this.transactionsChanged.next())
+    );
   }
 
   transfer(
@@ -84,7 +92,9 @@ export class TransactionService {
 
     // every rule passed: take from the sender, give to the recipient
     // The backend must perform both balance updates atomically.
-    return this.api.transfer(request);
+    return this.api.transfer(request).pipe(
+      tap(() => this.transactionsChanged.next())
+    );
   }
 
   getRecentTransactions(): Observable<RecentTransactionsResponse> {
